@@ -27,12 +27,14 @@ const likesCollection = db.collection('likes')
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 
+const dummy = false;
 
 export {
     db,
     googleProvider,
     facebookProvider,
     auth,
+    dummy,
     currentUser,
     usersCollection,
     postsCollection,
