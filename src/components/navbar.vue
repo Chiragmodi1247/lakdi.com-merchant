@@ -20,6 +20,9 @@
             <button class="merchant-orders">Orders</button>
         </td>
         <td>
+            <button class="add-product">Add Product</button>
+        </td>
+        <td>
             <button class="merchant-profile">Profile</button>
         </td>
       </tr>
@@ -45,8 +48,7 @@ export default {
 
 <style>
 .nav-bar {
-  height: 7vh;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   position: fixed;
   width: 100vW;
   /* background: rgb(81, 81, 243); */
@@ -56,19 +58,24 @@ export default {
 }
 
 .search-input {
-  border: 1px solid black;
-  width: 50vw;
+  border: 1px solid white;
+  width: 70vw;
 }
 
 .search-button {
-  background: blue;
+  background: whitesmoke;
 }
 .merchant-orders {
-  background: blue;
-
+  background: whitesmoke; 
+   margin-left: 3vw;
 }
 .merchant-profile {
-  background: blue;
-color: white;
+  background: whitesmoke;
+  margin-left: 3vw;
+}
+.add-product {
+  background: whitesmoke; 
+   margin-left: 3vw;
+
 }
 </style>

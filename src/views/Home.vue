@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view />
+    <!-- <router-view /> -->
   </div>
 </template>
 
@@ -14,8 +14,5 @@ export default {
     // login
   }
 };
-
-// if(dummy)
-// document.getElementById('login').style.display = "none"; 
 
 </script>
