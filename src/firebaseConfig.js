@@ -20,14 +20,14 @@ const currentUser = auth.currentUser
 // date issue fix according to firebase
 
 // firebase collections
-const usersCollection = db.collection('users')
-const postsCollection = db.collection('posts')
-const commentsCollection = db.collection('comments')
-const likesCollection = db.collection('likes')
+// const usersCollection = db.collection('users')
+// const postsCollection = db.collection('posts')
+// const commentsCollection = db.collection('comments')
+// const likesCollection = db.collection('likes')
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 
-const dummy = false;
+const dummy = true;
 
 export {
     db,
@@ -36,8 +36,8 @@ export {
     auth,
     dummy,
     currentUser,
-    usersCollection,
-    postsCollection,
-    commentsCollection,
-    likesCollection
+    // usersCollection,
+    // postsCollection,
+    // commentsCollection,
+    // likesCollection
 }

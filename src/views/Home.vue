@@ -1,16 +1,21 @@
 <template>
   <div>
-    <login />
     <router-view />
   </div>
 </template>
 
 <script>
-import login from "./login";
+// import login from "./login";
+// import { dummy} from "../firebaseConfig";
+
 export default {
   name: "home",
   components: {
-    login
+    // login
   }
 };
+
+// if(dummy)
+// document.getElementById('login').style.display = "none"; 
+
 </script>

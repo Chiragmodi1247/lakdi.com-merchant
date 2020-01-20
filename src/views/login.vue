@@ -28,7 +28,7 @@
             </v-card-text>
             <v-container fluid>
               <v-row align="center" justify="center">
-                <v-btn color="primary" @click="manualLogin">Login</v-btn>
+                <router-link to='/about'><v-btn color="primary" @click="manualLogin">  Login </v-btn></router-link>
               </v-row>
               <v-row align="center" justify="center">
                 <p>
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { facebookProvider, googleProvider, auth } from "../firebaseConfig";
+// import { facebookProvider, googleProvider, auth } from "../firebaseConfig";
 
 export default {
   name: "home",
@@ -66,44 +66,44 @@ export default {
     manualLogin: function() {
         this.$router.push('/about')
 },
-    googleAuth: function() {
-      auth
-        .signInWithPopup(googleProvider)
-        .then(function(result) {
-          let token = result.credential.accessToken;
-          let user = result.user;
-          window.console.log("User: " + user);
-          window.console.log("Token: " + token);
-        })
-        .catch(function(error) {
-          window.console.log(error);
-        });
-      // alert("Hello "+ this.name)
-    },
-    facebookAuth: function() {
-      auth
-        .signInWithPopup(facebookProvider)
-        .then(function(result) {
-          let token = result.credential.accessToken;
-          let user = result.user;
-          window.console.log("User: " + user);
-          window.console.log("Token: " + token);
-        })
-        .catch(function(error) {
-          window.console.log(error);
-        });
-      // alert("Hello "+ this.name)
-    },
+    // googleAuth: function() {
+    //   auth
+    //     .signInWithPopup(googleProvider)
+    //     .then(function(result) {
+    //       let token = result.credential.accessToken;
+    //       let user = result.user;
+    //       window.console.log("User: " + user);
+    //       window.console.log("Token: " + token);
+    //     })
+    //     .catch(function(error) {
+    //       window.console.log(error);
+    //     });
+    //   // alert("Hello "+ this.name)
+    // },
+    // facebookAuth: function() {
+    //   auth
+    //     .signInWithPopup(facebookProvider)
+    //     .then(function(result) {
+    //       let token = result.credential.accessToken;
+    //       let user = result.user;
+    //       window.console.log("User: " + user);
+    //       window.console.log("Token: " + token);
+    //     })
+    //     .catch(function(error) {
+    //       window.console.log(error);
+    //     });
+    //   // alert("Hello "+ this.name)
+    // },
 
-    currentUser: function() {
-      let user = auth.currentUser;
-      window.console.log(user.email);
-    },
-    deleteUser: function() {
-      let user = auth.currentUser;
+    // currentUser: function() {
+    //   let user = auth.currentUser;
+    //   window.console.log(user.email);
+    // },
+    // deleteUser: function() {
+    //   let user = auth.currentUser;
 
-      user.delete();
-    }
+    //   user.delete();
+    // }
   },
   props: {
     source: String
