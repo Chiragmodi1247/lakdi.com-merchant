@@ -20,7 +20,7 @@
             <button class="merchant-orders">Orders</button>
         </td>
         <td>
-            <button class="add-product">Add Product</button>
+            <button class="add-product" @click="add_product">Add Product</button>
         </td>
         <td>
             <button class="merchant-profile">Profile</button>
@@ -41,6 +41,9 @@ export default {
   methods: {
     search_product: function() {
       window.console.log("Product: " + this.search_input);
+    },
+    add_product: function() {
+        this.$router.push('/addProduct')
     }
   }
 };
