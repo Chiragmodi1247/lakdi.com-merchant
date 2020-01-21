@@ -127,7 +127,7 @@
       </table>
 
       <div class="submit-cancel-btn">
-        <button class="submit-btn" @click="onSubmit">
+        <button class="submit-btn" @click="addProduct">
           Save
         </button>
 
@@ -173,7 +173,7 @@ export default {
         valueinput.value = "";
       }
     },
-    onSubmit: function() {
+    addProduct: function() {
       //   window.console.log(this.product);
 
       fetch("/echo/json/", {

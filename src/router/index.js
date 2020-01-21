@@ -7,12 +7,13 @@ import merchantHome from '../views/MerchantHome.vue'
 import newProduct from '../components/NewProduct.vue'
 import SoldProducts from '../components/SoldProducts.vue'
 
-import { auth , dummy} from "../firebaseConfig";
+import { auth } from "../firebaseConfig";
+import store from '../store'
 
 Vue.use(VueRouter)
 
 function requireAuth (to, from, next) {
-  if (!dummy) {
+  if (!store.state.isLogged) {
     next({
       path: '/login',
       query: { redirect: to.fullPath }

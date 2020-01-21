@@ -19,11 +19,11 @@
             <input
               type="number"
               class="quantity-input"
-              v-model="product.updatedQuantity"
+              v-model="updatedProduct.updatedQuantity"
             />
           </v-col>
           <v-col lg="8">
-            <button @click="popup" class="change-quantity">
+            <button @click="updateProduct" class="change-quantity">
               <h3>Change Quantity</h3>
             </button>
           </v-col>
@@ -33,17 +33,17 @@
             <input
               type="number"
               class="price-input"
-              v-model="product.updatedPrice"
+              v-model="updatedProduct.updatedPrice"
             />
           </v-col>
           <v-col lg="7">
-            <button @click="popup" class="change-quantity">
+            <button @click="updateProduct" class="change-quantity">
               <h3>Change Price</h3>
             </button>
           </v-col>
         </v-row>
         <v-row>
-          <button class="discontinue-btn">
+          <button @click="discontinueProduct" class="discontinue-btn">
             <h3>Discontinue Product</h3>
           </button>
         </v-row>
@@ -57,9 +57,15 @@ export default {
   name: "product",
   data: function() {
     return {
-      product: {
+      updatedProduct: {
         updatedQuantity: this.product_prop.merchant_quantity,
-        updatedPrice: this.product_prop.merchant_price
+        updatedPrice: this.product_prop.merchant_price,
+        merchantId: this.$store.state.merchantId,
+        productId: this.product_prop.product_id,
+      },
+      DisconituedProductDetails: {
+        merchantId: this.$store.state.merchantId,
+        productId: this.product_prop.product_id,
       }
     };
   },
@@ -69,6 +75,36 @@ export default {
   methods: {
     popup: function() {
       alert("You clicked me: " + this.product_prop.product_id);
+    },
+    updateProduct: function() {
+      fetch("/echo/json/", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(this.updatedProduct)
+      })
+        .then(function(res) {
+          window.console.log(res);
+        })
+        .catch(function(res) {
+          window.console.log(res);
+        });
+    },
+    discontinueProduct: function() {
+      fetch("/echo/json/", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(this.DisconituedProductDetails)
+      })
+        .then(function(res) {
+          window.console.log(res);
+        })
+        .catch(function(res) {
+          window.console.log(res);
+        });
     }
   }
 };

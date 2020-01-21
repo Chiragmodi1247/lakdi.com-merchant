@@ -5,7 +5,7 @@
       <div v-for="(product, index) in products" v-bind:key="index">
         <Product :product_prop="product" />
       </div>
-      <br><br><br><br>
+      <br /><br /><br /><br />
     </div>
     <div class="split_right">
       <!-- <div class="myGraph">
@@ -94,13 +94,23 @@ export default {
   },
   components: {
     Product,
-    MerchantData,
+    MerchantData
     // Graph
   },
   methods: {
     popup: function(index) {
-      alert("U clicked on "+ index);
+      alert("U clicked on " + index);
     }
+  },
+  created: function() {
+    window.console.log("Merchant Home created");
+    fetch("https://api.github.com/users/Chiragmodi1247")
+      .then(response => {
+        return response.json();
+      })
+      .then(myJson => {
+        window.console.log(myJson);
+      });
   }
 };
 </script>

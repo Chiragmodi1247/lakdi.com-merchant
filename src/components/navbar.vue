@@ -40,9 +40,7 @@ export default {
   methods: {
     search_product: function() {
       window.console.log("Product: " + this.search_input);
-    },
-    add_product: function() {
-      this.$router.push("/addProduct");
+      this.search_input = ""
     }
   }
 };

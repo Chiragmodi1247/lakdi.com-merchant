@@ -132,6 +132,16 @@ export default {
         }
       ]
     };
+  },
+  created: function() {
+    window.console.log("orders page created")
+    fetch("https://api.github.com/users/Chiragmodi1247")
+      .then(response => {
+        return response.json();
+      })
+      .then(myJson => {
+        window.console.log(myJson);
+      });
   }
 };
 </script>

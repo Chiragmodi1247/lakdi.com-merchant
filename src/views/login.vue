@@ -12,7 +12,7 @@
                 <v-text-field
                   label="Login"
                   name="login"
-                  v-model="name"
+                  v-model="user.name"
                   prepend-icon="person"
                   type="text"
                 />
@@ -20,7 +20,7 @@
                 <v-text-field
                   id="password"
                   label="Password"
-                  name="password"
+                  v-model="user.password"
                   prepend-icon="lock"
                   type="password"
                 />
@@ -28,7 +28,11 @@
             </v-card-text>
             <v-container fluid>
               <v-row align="center" justify="center">
-                <router-link to='/about'><v-btn color="primary" @click="manualLogin">  Login </v-btn></router-link>
+                <router-link to="/merchantHome"
+                  ><v-btn color="primary" @click="manualLogin">
+                    Login
+                  </v-btn></router-link
+                >
               </v-row>
               <v-row align="center" justify="center">
                 <p>
@@ -37,8 +41,8 @@
                 </p>
               </v-row>
               <v-row align="center" justify="space-around">
-                <v-btn color="accent" @click="googleAuth">Gmail</v-btn>
-                <v-btn color="accent" @click="facebookAuth">Facebook</v-btn>
+                <!-- <v-btn color="accent" @click="googleAuth">Gmail</v-btn>
+                <v-btn color="accent" @click="facebookAuth">Facebook</v-btn> -->
               </v-row>
               <v-row align="center" justify="center">
                 <p>Don't have an account? <a href="">Create Account</a></p>
@@ -59,13 +63,17 @@ export default {
   components: {},
   data: function() {
     return {
-      name: ""
+      user: {
+        name: "",
+        password: ""
+      }
     };
   },
   methods: {
     manualLogin: function() {
-        this.$router.push('/about')
-},
+      this.$store.dispatch("loginUser", this.user);
+      // this.$router.push('/about')
+    }
     // googleAuth: function() {
     //   auth
     //     .signInWithPopup(googleProvider)
