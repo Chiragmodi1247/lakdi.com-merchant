@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="product-list">
     <v-card class="title-card" style="background: rgb(1, 132, 255);">
       <v-row class="title-bar">
         <v-col lg="3">
@@ -137,6 +137,9 @@ export default {
 </script>
 
 <style>
+.product-list {
+  margin: 60px 0px 0px 20px;
+}
 .title-bar {
   text-align: center;
 }

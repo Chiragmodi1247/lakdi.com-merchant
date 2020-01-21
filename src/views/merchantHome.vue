@@ -94,7 +94,7 @@ export default {
   },
   components: {
     Product,
-    MerchantData
+    MerchantData,
     // Graph
   },
   methods: {

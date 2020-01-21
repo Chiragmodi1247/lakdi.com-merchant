@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2>Add New Product</h2>
     <div class="new-product">
       <table id="price_input">
@@ -195,6 +195,9 @@ export default {
 </script>
 
 <style>
+.container {
+  margin-left: 20px;
+}
 .new-product {
   text-align: center;
   border: 1px solid black;

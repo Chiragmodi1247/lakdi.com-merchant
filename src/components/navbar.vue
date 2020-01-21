@@ -11,13 +11,18 @@
           type="text"
           placeholder="Search ex: iphone 6"
         />
-        <button class="search-button" @click="search_product"><h3>Search</h3></button>
+        <button class="search-button" @click="search_product">
+          <h3>Search</h3>
+        </button>
       </v-col>
-      <v-col lg="1">
-      </v-col>
+      <v-col lg="1"> </v-col>
       <v-col lg="3">
-        <button class="merchant-orders"> <h3>Orders</h3> </button>
-        <button class="add-product" @click="add_product"><h3>Add Product</h3></button>
+        <router-link to="/soldproducts">
+          <button class="merchant-orders"><h3>Orders</h3></button>
+        </router-link>
+        <router-link to="/addProduct">
+          <button class="add-product"><h3>Add Product</h3></button>
+        </router-link>
         <button class="merchant-profile"><h3>Profile</h3></button>
       </v-col>
     </v-row>
