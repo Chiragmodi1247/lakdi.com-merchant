@@ -5,6 +5,7 @@ import About from '../views/About.vue'
 import Login from '../views/Login.vue'
 import merchantHome from '../views/MerchantHome.vue'
 import newProduct from '../components/NewProduct.vue'
+import SoldProducts from '../components/SoldProducts.vue'
 
 import { auth , dummy} from "../firebaseConfig";
 
@@ -27,6 +28,7 @@ const router = new VueRouter({
   routes: [
     { path: '/home', component: Home, beforeEnter: requireAuth  },
     { path: '/merchantHome', component: merchantHome, beforeEnter: requireAuth  },
+    { path: '/soldproducts', component: SoldProducts, beforeEnter: requireAuth  },
     { path: '/about', component: About },
     { path: '/addProduct', component: newProduct, beforeEnter: requireAuth  },
     { path: '/login', component: Login },

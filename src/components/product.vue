@@ -1,5 +1,16 @@
 <template>
-  <div class="card">
+
+<v-card class="card">
+  <v-row>
+    <v-col lg="2">
+          <img class="img" src="../assets/red-chair.jpg" alt="Red-chair" />
+    </v-col>
+    <v-col lg="6">
+          <h3>Cecelia Wing Chair in Red Colour by CasaCraft</h3>
+    </v-col>
+  </v-row>
+</v-card>
+  <!-- <div class="card">
     <table>
       <tr>
         <td>
@@ -30,7 +41,7 @@
         </td>
       </tr>
     </table>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -41,9 +52,9 @@ export default {
 
 <style>
 .card {
-  margin: 20px;
+  margin: 20px 20px 0px 20px;
   border: 1px solid black;
-  max-width: 30vw;
+  max-width: 70vw;
 }
 .card:hover {
   box-shadow: 0px 5px 5px;
@@ -51,7 +62,7 @@ export default {
 
 .img {
   margin: 10px;
-  max-width: 50px;
+  max-width: 100px;
 }
 .change-quantity {
   background: rgb(194, 174, 0);

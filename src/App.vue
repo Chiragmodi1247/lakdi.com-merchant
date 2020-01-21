@@ -1,40 +1,39 @@
 <template>
   <div>
-      <div class="header">
-       <navbar />
-      </div>
-      <div class="content-section">
-          <router-view />
-      </div>
-      <div class="footer"></div>
+    <div class="header">
+      <navbar />
+    </div>
+    <div class="content-section">
+      <router-view />
+    </div>
+    <div class="footer"></div>
   </div>
 </template>
 
 <script>
-import Navbar from './components/Navbar'
+import Navbar from "./components/Navbar";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     Navbar
-},
+  },
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>
 
 <style>
 .header {
-        position: fixed;
-    width: 100%;
-    height: 50px;
-    background: rgb(57, 73, 221);
-    top: 0px;
+  position: fixed;
+  width: 100%;
+  height: 50px;
+  top: 0px;
 }
 .content-section {
-    margin: 60px 0px 0px 30px;
+  margin: 50px 0px 0px 0px;
 }
 </style>
