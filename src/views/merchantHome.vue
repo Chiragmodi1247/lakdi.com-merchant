@@ -1,14 +1,16 @@
 <template>
   <div class="product_box">
     <div class="split_left">
-    <h2 class="myProduct">My Products</h2>
-      <div v-for="(todo, order) in todos" v-bind:key="order">
-          <Product />
-          <Product />
-          <Product />
+      <h2 class="myProduct">My Products</h2>
+      <div v-for="(product, index) in products" v-bind:key="index">
+        <Product :product_prop="product" />
       </div>
+      <br><br><br><br>
     </div>
     <div class="split_right">
+      <!-- <div class="myGraph">
+        <Graph />
+      </div> -->
       <MerchantData />
     </div>
   </div>
@@ -16,39 +18,101 @@
 
 <script>
 import Product from "../components/Product";
-import MerchantData from '../components/MerchantData'
+import MerchantData from "../components/MerchantData";
+// import Graph from '../components/Graph'
 export default {
   name: "merchantHome",
   data: function() {
     return {
-      todos: [
-        { text: "Learn JavaScript" },
-        { text: "Learn Vue" },
-        { text: "Build something awesome" }
+      products: [
+        {
+          product_id: "1",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "2",
+          product_name: "Cecelia by CasaCraft",
+          merchant_quantity: 24,
+          merchant_price: 1599,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "trh6s748ud",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "trh6s748ud",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "trh6s748ud",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "trh6s748ud",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "trh6s748ud",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        },
+        {
+          product_id: "trh6s748ud",
+          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
+          merchant_quantity: 20,
+          merchant_price: 1999,
+          image_url:
+            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+        }
       ]
     };
   },
   components: {
     Product,
     MerchantData
+    // Graph
+  },
+  methods: {
+    popup: function(index) {
+      alert("U clicked on "+ index);
+    }
   }
 };
 </script>
 
-
 <style>
 .myProduct {
   margin-left: 20px;
-  color: white; 
-}
-.product_box {
-  border-right: 5px solid black;
-  max-width: 70vw;
-  background: rgb(141, 141, 230);
+  color: white;
 }
 .split_left {
   height: 100%;
-  width: 70%;
+  width: 60%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -60,13 +124,17 @@ export default {
 
 .split_right {
   height: 100%;
-  width: 30%;
+  width: 40%;
   position: fixed;
   z-index: 1;
   top: 0;
   right: 0;
   overflow-x: hidden;
   margin-top: 55px;
-  background: rgb(141, 141, 230);
+  /* background: rgb(190, 151, 23); */
+}
+.myGraph {
+  border: 1px solid black;
+  margin: 20px;
 }
 </style>
