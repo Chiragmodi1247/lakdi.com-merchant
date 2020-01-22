@@ -26,14 +26,15 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .header {
   position: fixed;
   width: 100%;
   height: 50px;
   top: 0px;
+  z-index: 100
 }
 .content-section {
-  margin: 50px 0px 0px 0px;
+  margin: 55px 0px 0px 0px;
 }
 </style>

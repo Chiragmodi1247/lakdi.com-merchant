@@ -1,82 +1,98 @@
 <template>
-  <v-card class="card">
-    <v-row>
-      <v-col lg="2">
-        <img class="img" :src="product_prop.image_url" alt="Red-chair" />
-      </v-col>
-      <v-col lg="6">
+  <div>
+    <v-card loading="true">
+      <v-row>
+        <v-col>
+          <v-img
+            :src="product_prop.imageUrl"
+            :lazy-src="product_prop.imageUrl"
+            max-width="350"
+            max-height="100"
+          >
+          </v-img>
+          <div style="text-align: center; font-weight: bold;">
+            {{ product_prop.productName }}
+          </div>
+        </v-col>
+      </v-row>
+
+      <!-- <v-row class="my_graph">
+        <v-col lg="6">
+          <ProductGraph />
+        </v-col>
+      </v-row> -->
+
+      <v-row style="text-align: center;">
         <v-row>
-          <h3>{{ product_prop.product_name }}</h3>
-        </v-row>
-        <v-row>
-          <v-col lg="6"> Qauntity: {{ product_prop.merchant_quantity }} </v-col>
-          <v-col lg="6"> Price: {{ product_prop.merchant_price }} </v-col>
-        </v-row>
-      </v-col>
-      <v-col class="my-buttons" lg="4">
-        <v-row>
-          <v-col lg="4">
+          <v-col lg="6">
+            Qauntity:
             <input
               type="number"
               class="quantity-input"
               v-model="updatedProduct.updatedQuantity"
             />
           </v-col>
-          <v-col lg="8">
-            <button @click="updateProduct" class="change-quantity">
-              <h3>Change Quantity</h3>
-            </button>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col lg="5">
+          <v-col lg="6">
+            Price:
             <input
               type="number"
               class="price-input"
               v-model="updatedProduct.updatedPrice"
             />
           </v-col>
-          <v-col lg="7">
-            <button @click="updateProduct" class="change-quantity">
-              <h3>Change Price</h3>
-            </button>
-          </v-col>
         </v-row>
-        <v-row>
-          <button @click="discontinueProduct" class="discontinue-btn">
-            <h3>Discontinue Product</h3>
-          </button>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-card>
+      </v-row>
+    </v-card>
+    <div class="up_btn_box">
+      <button @click="discontinueProduct" class="update_button">
+        <h3>Update Product</h3>
+      </button>
+    </div>
+    <div class="dis_btn_box">
+      <button @click="discontinueProduct" class="discontinue_button">
+        <h3>Discontinue This Product</h3>
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
+// import ProductGraph from "../components/Graph";
 export default {
   name: "product",
+  components: {
+    // ProductGraph
+  },
   data: function() {
     return {
       updatedProduct: {
-        updatedQuantity: this.product_prop.merchant_quantity,
-        updatedPrice: this.product_prop.merchant_price,
+        updatedQuantity: this.product_prop.productQuantity,
+        updatedPrice: this.product_prop.merchantPrice,
         merchantId: this.$store.state.merchantId,
-        productId: this.product_prop.product_id,
+        productId: this.product_prop.productId
       },
       DisconituedProductDetails: {
         merchantId: this.$store.state.merchantId,
-        productId: this.product_prop.product_id,
+        productId: this.product_prop.productId
       }
     };
   },
   props: {
-    product_prop: Object
+    product_prop: Object,
+    showImage: Function
   },
   methods: {
     popup: function() {
-      alert("You clicked me: " + this.product_prop.product_id);
+      alert("You clicked me: " + this.product_prop.productId);
+    },
+    showProductimage: function(url) {
+      window.console.log("showProductimage url", url);
+      this.showImage(url);
     },
     updateProduct: function() {
+      alert(
+        "Your product " + this.product_prop.productName + " has been updated."
+      );
       fetch("/echo/json/", {
         headers: {
           "Content-Type": "application/json"
@@ -111,34 +127,49 @@ export default {
 </script>
 
 <style>
-.card {
-  margin: 20px 20px 0px 20px;
-  border: 1px solid black;
-  max-width: 70vw;
-}
-.card:hover {
-  box-shadow: 0px 5px 5px;
-}
-
-.img {
-  margin: 10px;
-  max-width: 100px;
+.my_graph {
+    border: 1px solid black;
+    color: black;
 }
 .change-quantity {
-  background: rgb(253, 228, 6);
+  border: 1px solid black;
+  /* background: rgb(0, 153, 255); */
+  padding: 5px;
+  /* color: white; */
+  border-radius: 5px;
+
+  /* background: rgb(253, 228, 6);
   border-radius: 10px;
   box-shadow: 0px 0px 10px;
-  padding: 5px;
+  padding: 5px; */
   /* margin: 5px 0px 5px 25px; */
 }
+.dis_btn_box {
+  text-align: center;
+  background: rgb(255, 94, 45);
+}
+.up_btn_box {
+  text-align: center;
+  background: rgb(45, 101, 255);
+}
+.discontinue_button {
+  /* border: 1px solid black; */
+  /* background: rgb(0, 153, 255); */
+  padding: 5px;
+  /* color: white; */
+  border-radius: 5px;
+  /* text-align: center; */
+  /* background: rgb(255, 94, 45); */
+  color: white;
+}
 .quantity-input {
-  max-width: 60px;
+  max-width: 40px;
   margin: 5px;
   border: 1px solid blue;
   border-radius: 5px;
 }
 .price-input {
-  max-width: 100px;
+  max-width: 70px;
   margin: 5px;
   border: 1px solid blue;
   border-radius: 5px;
@@ -147,10 +178,9 @@ export default {
   background: rgb(194, 174, 0);
   padding: 5px;
 }
-.discontinue-btn {
-  background: rgb(221, 81, 57);
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px;
+.update_button {
   padding: 5px;
+  border-radius: 5px;
+  color: white;
 }
 </style>

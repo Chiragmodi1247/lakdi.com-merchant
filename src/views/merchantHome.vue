@@ -1,105 +1,160 @@
 <template>
-  <div class="product_box">
-    <div class="split_left">
-      <h2 class="myProduct">My Products</h2>
-      <div v-for="(product, index) in products" v-bind:key="index">
-        <Product :product_prop="product" />
-      </div>
-      <br /><br /><br /><br />
+  <div>
+    <div class="data">
+      <v-row>
+        <v-col lg="3">
+          <v-row>
+            <v-col>
+              <h2>Total ammount</h2>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <h1 style="color: white">45,999</h1>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col lg="3">
+          <v-row>
+            <v-col>
+              <h2>Total Product Sold</h2>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <h1 style="color: white">30</h1>
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col lg="6">
+          <Graph />
+        </v-col>
+      </v-row>
     </div>
-    <div class="split_right">
-      <!-- <div class="myGraph">
-        <Graph />
-      </div> -->
-      <MerchantData />
+    <div class="products-box">
+      <v-row>
+        <v-col
+          lg="3"
+          v-for="(product, index) in products"
+          v-bind:key="index"
+          class="dummy-for-z"
+        >
+          <Product :product_prop="product" :showImage="showImage"/>
+        </v-col>
+      </v-row>
     </div>
+    <!-- <div class="modal-container-image" v-if="modalImageUrl">
+     <p>My first modal</p>
+     <v-img
+          :src="modalImageUrl"
+          :lazy-src="modalImageUrl"
+          max-width="350"
+          max-height="100"
+          id="my_product_img1"
+        ></v-img>
+    </div> -->
+
   </div>
 </template>
 
 <script>
 import Product from "../components/Product";
-import MerchantData from "../components/MerchantData";
-// import Graph from '../components/Graph'
+// import MerchantData from "../components/MerchantData";
+import Graph from "../components/Graph";
 export default {
   name: "merchantHome",
   data: function() {
     return {
+      modalImageUrl: '',
       products: [
         {
-          product_id: "1",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "1",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
         },
         {
-          product_id: "2",
-          product_name: "Cecelia by CasaCraft",
-          merchant_quantity: 24,
-          merchant_price: 1599,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "2",
+          productName: "Red Sofa by Apple",
+          productQuantity: 10,
+          merchantPrice: 10000,
+          imageUrl:
+            "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
         },
         {
-          product_id: "trh6s748ud",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "3",
+          productName: "Red Sofa by Apple",
+          productQuantity: 90,
+          merchantPrice: 600,
+          imageUrl:
+            "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
         },
         {
-          product_id: "trh6s748ud",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "4",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1507904953637-96429a46671a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
         },
         {
-          product_id: "trh6s748ud",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "5",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1545034210-264a82b4688b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
         },
         {
-          product_id: "trh6s748ud",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "6",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
         },
         {
-          product_id: "trh6s748ud",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
+          productId: "7",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1541123603104-512919d6a96c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
         },
         {
-          product_id: "trh6s748ud",
-          product_name: "Cecelia Wing Chair in Red Colour by CasaCraft",
-          merchant_quantity: 20,
-          merchant_price: 1999,
-          image_url:
-            "https://ii1.pepperfry.com/media/catalog/product/c/e/800x880/cecelia-wing-chair-in-red-colour-by-casacraft-cecelia-wing-chair-in-red-colour-by-casacraft-zhafeq.jpg"
-        }
+          productId: "8",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        },
+        {
+          productId: "9",
+          productName: "Red Sofa by Apple",
+          productQuantity: 20,
+          merchantPrice: 1999,
+          imageUrl:
+            "https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        },
+
       ]
     };
   },
   components: {
     Product,
-    MerchantData
-    // Graph
+    // MerchantData
+    Graph
   },
   methods: {
     popup: function(index) {
       alert("U clicked on " + index);
+    },
+    showImage: function(url){
+      window.console.log('showImage url', url);
+      this.modalImageUrl = url;
     }
   },
   created: function() {
@@ -115,36 +170,16 @@ export default {
 };
 </script>
 
-<style>
-.myProduct {
-  margin-left: 20px;
-  color: white;
+<style scoped>
+.data {
+  text-align: center;
+  background-image: linear-gradient(rgb(105, 29, 228), rgb(151, 151, 151));
+  /* background: rgb(105, 29, 228); */
+  height: 30vh;
+  width: 100%;
 }
-.split_left {
-  height: 100%;
-  width: 60%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  overflow-x: hidden;
-  margin-top: 55px;
-  background: rgb(141, 141, 230);
-}
-
-.split_right {
-  height: 100%;
-  width: 40%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  overflow-x: hidden;
-  margin-top: 55px;
-  /* background: rgb(190, 151, 23); */
-}
-.myGraph {
-  border: 1px solid black;
-  margin: 20px;
+.products-box {
+  padding: 50px;
+  background-image: linear-gradient(rgb(151, 151, 151), white);
 }
 </style>
