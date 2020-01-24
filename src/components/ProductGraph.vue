@@ -23,7 +23,7 @@ const gradients = [
   ["red", "orange", "yellow"],
   ["purple", "violet"],
   ["#00c6ff", "#F0F", "#FF0"],
-  ["#fff", "#fff", "#fff"]
+  ["#000", "#000", "#000"]
 ];
 
 export default {
@@ -37,7 +37,7 @@ export default {
     value: [20, 2, 25, 9, 5, 10],
     gradientDirection: "top",
     gradients,
-    color: "#fff",
+    color: gradients[2][0],
     fill: false,
     type: "trend",
     autoLineWidth: false
