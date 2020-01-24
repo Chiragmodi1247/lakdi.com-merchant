@@ -3,7 +3,7 @@
     <v-row>
       <v-col lg="1">
         <router-link to="/merchantHome">
-            <h2>Title <span class="mdi mdi-home-outline"></span></h2>
+            <h2>Lakdi <span class="mdi mdi-home-outline"></span></h2>
         </router-link>
       </v-col>
       <v-col lg="7">

@@ -19,16 +19,13 @@
             <h1>Chirag Modi</h1>
           </v-row>
           <v-row>
-            <h2>Other data</h2>
+            <h2>Other basic details</h2>
           </v-row>
           <v-row>
-            <h2>Other data</h2>
+            <h2>Address</h2>
           </v-row>
           <v-row>
-            <h2>Other data</h2>
-          </v-row>
-          <v-row>
-            <h2>Other data</h2>
+            <h2>Payment details</h2>
           </v-row>
         </v-col>
       </v-row>

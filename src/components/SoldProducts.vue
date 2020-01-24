@@ -5,16 +5,13 @@
       style="background: rgb(70, 70, 202); color: white"
     >
       <v-row class="title-bar">
-        <v-col lg="3">
-          <h3>OrderId</h3>
-        </v-col>
-        <v-col lg="3">
+        <v-col lg="4">
           <h3>Product Name</h3>
         </v-col>
-        <v-col lg="3">
+        <v-col lg="4">
           <h3>Quantity</h3>
         </v-col>
-        <v-col lg="2">
+        <v-col lg="4">
           <h3>Date</h3>
         </v-col>
       </v-row>
@@ -26,16 +23,13 @@
         v-for="(order, index) in orders"
         v-bind:key="index"
       >
-        <v-col lg="3">
-          {{ order.order_id }}
+        <v-col lg="4">
+          {{ order.productName }}
         </v-col>
-        <v-col lg="3">
-          {{ order.product_name }}
+        <v-col lg="4">
+          {{ order.productQuantity }}
         </v-col>
-        <v-col lg="3">
-          {{ order.quantity }}
-        </v-col>
-        <v-col lg="2">
+        <v-col lg="4">
           {{ order.date }}
         </v-col>
       </v-row>
@@ -50,113 +44,25 @@ export default {
     return {
       orders: [
         {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
+          productQuantity: 2,
+          productName: "Sofa 4 seater",
+          date: "2020-01-21 10:05:46.487"
         },
         {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
+          productQuantity: 5,
+          productName: "Sofa 4 seater",
+          date: "2020-01-23 10:55:46.487"
         },
         {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
+          productQuantity: 11,
+          productName: "Sofa 4 seater",
+          date: "2020-01-23 12:05:46.487"
         },
         {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
+          productQuantity: 7,
+          productName: "Sofa 4 seater",
+          date: "2020-01-22 10:25:46.487"
         },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        },
-        {
-          order_id: "vdg6278bvwejc6",
-          quantity: 20,
-          product_name: "Sofa 4 seater",
-          date: "20 Feb 2019"
-        }
       ]
     };
   },

@@ -31,7 +31,13 @@
         </v-col>
       </v-row>
     </div>
-    <div class="products-box">
+
+    <div v-if="!isPresent" class="no_product_box">
+      <h1>You don't have any added products</h1>
+    </div>
+
+
+    <div v-if="isPresent" class="products-box">
       <v-row>
         <v-col
           lg="3"
@@ -65,80 +71,81 @@ export default {
   name: "merchantHome",
   data: function() {
     return {
+      isPresent: true,
       modalImageUrl: '',
       products: [
-        {
-          productId: "1",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        },
-        {
-          productId: "2",
-          productName: "Red Sofa by Apple",
-          productQuantity: 10,
-          merchantPrice: 10000,
-          imageUrl:
-            "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        },
-        {
-          productId: "3",
-          productName: "Red Sofa by Apple",
-          productQuantity: 90,
-          merchantPrice: 600,
-          imageUrl:
-            "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-        },
-        {
-          productId: "4",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1507904953637-96429a46671a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
-        },
-        {
-          productId: "5",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1545034210-264a82b4688b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        },
-        {
-          productId: "6",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-        },
-        {
-          productId: "7",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1541123603104-512919d6a96c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        },
-        {
-          productId: "8",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        },
-        {
-          productId: "9",
-          productName: "Red Sofa by Apple",
-          productQuantity: 20,
-          merchantPrice: 1999,
-          imageUrl:
-            "https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        },
+        // {
+        //   productId: "1",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        // },
+        // {
+        //   productId: "2",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 10,
+        //   merchantPrice: 10000,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        // },
+        // {
+        //   productId: "3",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 90,
+        //   merchantPrice: 600,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+        // },
+        // {
+        //   productId: "4",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1507904953637-96429a46671a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
+        // },
+        // {
+        //   productId: "5",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1545034210-264a82b4688b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        // },
+        // {
+        //   productId: "6",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+        // },
+        // {
+        //   productId: "7",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1541123603104-512919d6a96c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        // },
+        // {
+        //   productId: "8",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        // },
+        // {
+        //   productId: "9",
+        //   productName: "Red Sofa by Apple",
+        //   productQuantity: 20,
+        //   merchantPrice: 1999,
+        //   imageUrl:
+        //     "https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
+        // },
 
       ]
     };
@@ -159,12 +166,14 @@ export default {
   },
   created: function() {
     window.console.log("Merchant Home created");
-    fetch("https://api.github.com/users/Chiragmodi1247")
+      // window.console.log(this.products.length);
+    fetch("http://10.177.69.78:8080/productdetails/merchantProduct/mer1")
       .then(response => {
         return response.json();
       })
       .then(myJson => {
-        window.console.log(myJson);
+      this.products = myJson.data;
+      window.console.log(myJson.data);
       });
   }
 };
@@ -177,6 +186,10 @@ export default {
   /* background: rgb(105, 29, 228); */
   height: 30vh;
   width: 100%;
+}
+.no_product_box {
+  text-align: center;
+  background-image: linear-gradient(rgb(151, 151, 151), white);
 }
 .products-box {
   padding: 50px;

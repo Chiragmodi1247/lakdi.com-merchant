@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    merchantId: "myMerchant1247",
+    merchantId: "mer1",
     name: "",
     password: "",
     isLogged: false

@@ -7,7 +7,7 @@
             :src="product_prop.imageUrl"
             :lazy-src="product_prop.imageUrl"
             max-width="350"
-            max-height="100"
+            max-height="150"
           >
           </v-img>
           <div style="text-align: center; font-weight: bold;">
@@ -29,7 +29,7 @@
             <input
               type="number"
               class="quantity-input"
-              v-model="updatedProduct.updatedQuantity"
+              v-model="updatedProduct.productQuantity"
             />
           </v-col>
           <v-col lg="6">
@@ -37,14 +37,14 @@
             <input
               type="number"
               class="price-input"
-              v-model="updatedProduct.updatedPrice"
+              v-model="updatedProduct.productPrice"
             />
           </v-col>
         </v-row>
       </v-row>
     </v-card>
     <div class="up_btn_box">
-      <button @click="discontinueProduct" class="update_button">
+      <button @click="updateProduct" class="update_button">
         <h3>Update Product</h3>
       </button>
     </div>
@@ -66,8 +66,8 @@ export default {
   data: function() {
     return {
       updatedProduct: {
-        updatedQuantity: this.product_prop.productQuantity,
-        updatedPrice: this.product_prop.merchantPrice,
+        productQuantity: this.product_prop.productQuantity,
+        productPrice: this.product_prop.productPrice,
         merchantId: this.$store.state.merchantId,
         productId: this.product_prop.productId
       },
@@ -90,10 +90,15 @@ export default {
       this.showImage(url);
     },
     updateProduct: function() {
-      alert(
-        "Your product " + this.product_prop.productName + " has been updated."
-      );
-      fetch("/echo/json/", {
+      // alert(
+      //   "Your product " + this.product_prop.productName + " has been updated."
+      // );
+      window.console.log(this.updatedProduct);
+      if(this.updatedProduct.productQuantity < 1 || this.updatedProduct.productPrice < 1){
+        alert("Please add number greater than zero!!")
+        return;
+      }
+        fetch("http://10.177.69.78:8080/productdetails/update", {
         headers: {
           "Content-Type": "application/json"
         },
@@ -108,11 +113,11 @@ export default {
         });
     },
     discontinueProduct: function() {
-      fetch("/echo/json/", {
+      fetch("http://10.177.69.78:8080/productdetails/remove", {
         headers: {
           "Content-Type": "application/json"
         },
-        method: "POST",
+        method: "DELETE",
         body: JSON.stringify(this.DisconituedProductDetails)
       })
         .then(function(res) {

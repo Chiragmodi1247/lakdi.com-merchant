@@ -1,10 +1,93 @@
 <template>
   <div class="my_container">
     <div class="new_product_mar">
+      <h2 style="color: white">Add Existing Product</h2>
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Select Category:</h3>
+        </v-col>
+        <v-col lg="6">
+          <select
+            required
+            @change="loadCategoryProducts"
+            class="drop-down"
+            v-model="selectedCategoryId"
+          >
+            <option
+              v-for="(category, category_index) in categories"
+              v-bind:key="category_index"
+              :value="category.categoryId"
+            >
+              {{ category.categoryName }}
+            </option>
+          </select>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Select Product:</h3>
+        </v-col>
+        <v-col lg="6">
+          <select
+            required
+            class="drop-down"
+            v-model="existingProduct.productId"
+          >
+            <option
+              v-for="(product1, product1_index) in categoryProducts"
+              v-bind:key="product1_index"
+              :value="product1.productId"
+            >
+              {{ product1.productName }}
+            </option>
+          </select>
+        </v-col>
+      </v-row>
 
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Quantity:</h3>
+        </v-col>
+        <v-col>
+          <input
+            required
+            class="input-box"
+            v-model="existingProduct.productQuantity"
+            type="number"
+            placeholder="Quantity"
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Price:</h3>
+        </v-col>
+        <v-col lg="6">
+          <input
+            required
+            class="input-box"
+            v-model="existingProduct.productPrice"
+            type="number"
+            placeholder="price"
+          />
+        </v-col>
+      </v-row>
+
+      <div class="submit-cancel-btn">
+        <button class="submit-btn" @click="addExistingProduct">
+          Add Product
+        </button>
+
+        <router-link to="/merchantHome">
+          <button class="cancel_btn">
+            Cancel
+          </button>
+        </router-link>
+      </div>
     </div>
-    <h2>Add New Product</h2>
 
+    <h2>Add New Product</h2>
     <v-card>
       <v-row>
         <v-col lg="6" class="my_new_prod_name">
@@ -19,18 +102,33 @@
           />
         </v-col>
       </v-row>
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Product Id:</h3>
+        </v-col>
+        <v-col lg="6" class="my_new_prod_input">
+          <input
+            v-model="product.productId"
+            type="text"
+            placeholder="Product Id"
+            class="input-box"
+          />
+        </v-col>
+      </v-row>
 
       <v-row>
         <v-col lg="6" class="my_new_prod_name">
           <h3>Catagory:</h3>
         </v-col>
         <v-col>
-          <select class="drop-down">
-            <option>Sofa</option>
-            <option>Chair</option>
-            <option>Bed</option>
-            <option>Table</option>
-            <option>Wardrobe</option>
+          <select class="drop-down" v-model="product.categoryId">
+            <option
+              v-for="(category, category_index) in categories"
+              v-bind:key="category_index"
+              :value="category.categoryId"
+            >
+              {{ category.categoryName }}
+            </option>
           </select>
         </v-col>
       </v-row>
@@ -140,11 +238,11 @@
         Add Product
       </button>
 
-<router-link to='/merchantHome'>
-      <button class="cancel_btn">
-        Cancel
-      </button>
-</router-link>
+      <router-link to="/merchantHome">
+        <button class="cancel_btn">
+          Cancel
+        </button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -154,14 +252,27 @@ export default {
   name: "NewProduct",
   data: function() {
     return {
+      categories: [],
+      selectedCategory: null,
+      selectedCategoryId: "1",
+      selectedProduct: null,
+      selectedProductId: 0,
+      categoryProducts: [],
+      product1: null,
+      existingProduct: {
+        productId: null,
+        productPrice: null,
+        merchantId: "mer1",
+        productQuantity: null
+      },
       product: {
-        productId: "123",
-        categoryId: "1",
-        productName: "",
-        imageUrl: "",
-        productAttributes: { brandName: "", color: "", material: "" },
-        productDescription: "",
-        productPrice: "",
+        productId: null,
+        categoryId: null,
+        productName: null,
+        imageUrl: null,
+        productAttributes: { brandName: null, color: null, material: null },
+        productDescription: null,
+        productPrice: null,
         productDetailsDto: {
           merchantId: "mer1",
           productQuantity: "1"
@@ -188,9 +299,15 @@ export default {
     },
     addProduct: function() {
       //   window.console.log(this.product);
+      if(this.product.productName === null || this.product.productId=== null || this.product.categoryId===null || this.product.productAttributes.brandName === null || this.product.productAttributes.color=== null || this.product.productAttributes.material === null || this.product.imageUrl=== null || this.product.productDescription === null || this.product.productPrice=== null)
+      {
+        alert("Please enter all fields")
+        window.console.log("called from validation")
+        return;
+      }
 
       fetch("http://10.177.68.26:8080/product/addProduct", {
-      // fetch("product/addProduct", {
+        // fetch("product/addProduct", {
         headers: {
           "Content-Type": "application/json"
         },
@@ -199,18 +316,70 @@ export default {
       })
         .then(function(res) {
           window.console.log(res);
+          // if(res.status === 200)
         })
         .catch(function(res) {
           window.console.log(res);
         });
+    },
+    addExistingProduct: function() {
+      if(this.existingProduct.productId === null || this.existingProduct.productQuantity=== null || this.existingProduct.productPrice===null)
+      {
+        alert("Please enter all fields")
+        window.console.log("called from validation")
+        return;
+      }
+      fetch("/addexisting/json", {
+        // fetch("product/addProduct", {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(this.existingProduct)
+      })
+        .then(function(res) {
+          window.console.log(res);
+          // if(res.status === 200)
+        })
+        .catch(function(res) {
+          window.console.log(res);
+        });
+    },
+    loadCategoryProducts: function() {
+      fetch(
+        "http://10.177.68.26:8080/product/getCategoryProducts/" +
+          this.selectedCategoryId
+      )
+        .then(response => {
+          return response.json();
+        })
+        .then(myJson => {
+          window.console.log("Selected Category: " + this.selectedCategoryId);
+          this.categoryProducts = myJson.data;
+          // this.category1 = myJson.data[0].categoryName;
+          // window.console.log("Products: "+myJson.data);
+        });
     }
+  },
+  created: function() {
+    fetch("http://10.177.68.26:8080/product/getCategories")
+      .then(response => {
+        return response.json();
+      })
+      .then(myJson => {
+        this.categories = myJson.data;
+        this.selectedCategory = myJson.data[0].categoryName;
+        this.selectedCategoryId = myJson.data[0].categoryId;
+        // window.console.log("Categories: "+myJson.data);
+      });
   }
 };
 </script>
 
 <style>
 .new_product_mar {
-  height: 30vh;
+  color: white;
+  height: 300px;
   background: rgb(62, 62, 121);
 }
 .my_new_prod_name {
