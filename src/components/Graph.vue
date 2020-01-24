@@ -34,7 +34,7 @@ export default {
     padding: 8,
     lineCap: "round",
     gradient: gradients[5],
-    value: [20, 2, 25, 9, 5, 10],
+    value: [5, 2, 25, 9, 5, 10],
     gradientDirection: "top",
     gradients,
     color: "#fff",
