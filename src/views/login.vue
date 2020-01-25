@@ -37,14 +37,9 @@
                 </v-row>
 
                 <v-row align="center" justify="center">
-                  <v-col lg="3">
+                  <v-col lg="6">
                     <v-btn color="red" @click="googleLog">
-                      Google
-                    </v-btn>
-                  </v-col>
-                  <v-col lg="3">
-                    <v-btn color="primary" @click="facebookLog">
-                      Facebook
+                     Login Using Google
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -141,7 +136,7 @@
 <script>
 // import { facebookProvider, googleProvider, auth } from "../firebaseConfig";
 // import {auth} from '../firebaseConfig'
-import router from "../router/index";
+// import router from "../router/index";
 export default {
   name: "home",
   components: {},
@@ -178,12 +173,17 @@ export default {
     }
   },
   methods: {
+    send() {
+      // window.console.log("I am in send method")
+      // window.console.log("My user logged?"+ this.$store.state.isLogged)
+      this.$router.push({ path: "/" });
+    },
     manualLogin: function() {
       if (this.validOld) {
         this.$store
           .dispatch("loginUser", this.user)
           .then(function(res) {
-            router.push({ path: "/" });
+            // router.push({ path: "/" });
             window.console.log("res from actions dispatch return " + res);
           })
           .catch(function(error) {
@@ -208,67 +208,29 @@ export default {
       // window.console.log("New user registered");
     },
     googleLog: function() {
-        this.$store.dispatch("googleauth")
-          .then(function(res) {
-            // router.push({ path: "/merchantHome" });
-            window.console.log("res from googlelog dispatch return " + res);
-          })
-          .catch(function(error) {
-            window.console.log(
-              "Error in google login after dispatch: " + error
-            );
-          });
+      let that = this;
+      this.$store
+        .dispatch("googleauth")
+        .then(function(res) {
+          that.send();
+          // this.$router.push({ path: "/" });
+          window.console.log("res from googlelog dispatch return " + res);
+        })
+        .catch(function(error) {
+          window.console.log("Error in google login after dispatch: " + error);
+        });
     },
     facebookLog: function() {
-        this.$store.dispatch("fbAuth")
-          .then(function(res) {
-            // router.push({ path: "/merchantHome" });
-            window.console.log("res from fblog dispatch return " + res);
-          })
-          .catch(function(error) {
-            window.console.log(
-              "Error in fb login after dispatch: " + error
-            );
-          });
+      this.$store
+        .dispatch("fbAuth")
+        .then(function(res) {
+          // router.push({ path: "/merchantHome" });
+          window.console.log("res from fblog dispatch return " + res);
+        })
+        .catch(function(error) {
+          window.console.log("Error in fb login after dispatch: " + error);
+        });
     }
-    // googleAuth: function() {
-    //   auth
-    //     .signInWithPopup(googleProvider)
-    //     .then(function(result) {
-    //       let token = result.credential.accessToken;
-    //       let user = result.user;
-    //       window.console.log("User: " + user);
-    //       window.console.log("Token: " + token);
-    //     })
-    //     .catch(function(error) {
-    //       window.console.log(error);
-    //     });
-    //   // alert("Hello "+ this.name)
-    // },
-    // facebookAuth: function() {
-    //   auth
-    //     .signInWithPopup(facebookProvider)
-    //     .then(function(result) {
-    //       let token = result.credential.accessToken;
-    //       let user = result.user;
-    //       window.console.log("User: " + user);
-    //       window.console.log("Token: " + token);
-    //     })
-    //     .catch(function(error) {
-    //       window.console.log(error);
-    //     });
-    //   // alert("Hello "+ this.name)
-    // },
-
-    // currentUser: function() {
-    //   let user = auth.currentUser;
-    //   window.console.log(user.email);
-    // },
-    // deleteUser: function() {
-    //   let user = auth.currentUser;
-
-    //   user.delete();
-    // }
   },
   props: {
     source: String

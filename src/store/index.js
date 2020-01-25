@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import firebase from "firebase";
 import {
   googleProvider,
-  facebookProvider,
   currentUser
 } from "../firebaseConfig.js";
 // import router from '../router/index'
@@ -12,7 +11,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    password: "",
     isLogged: false,
     newUserData: {
       merchantId: "",
@@ -27,9 +25,6 @@ export default new Vuex.Store({
     SET_NAME(state, value) {
       state.email = value;
     },
-    SET_PASSWORD(state, value) {
-      state.password = value;
-    },
     SET_LOGIN(state) {
       state.isLogged = true;
     },
@@ -38,7 +33,26 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    sendTokenTos(context, token) {
+      // fetch("http://10.177.68.26:8111/product/getCategories")
+      // .then(function(res) {
+      window.console.log("To send this token: " + token);
+      // window.console.log("From send token: " + res);
+      // })
+      // .catch(function(err) {
+      //   window.console.log("error in send token" + err);
+      // });
+    },
+    getTokenFirebase(){
+      firebase
+      .auth()
+      .currentUser.getIdTokenResult(true).then(function(token){
+      // localStorage.setItem('user-token',token.token);
+      window.console.log(token.token);
+      });
+  },
     loginUser(context, data) {
+      let that = this;
       return new Promise(function(resolve, reject) {
         // window.console.log("Login details in dispatch: "+ data)
         firebase
@@ -46,8 +60,8 @@ export default new Vuex.Store({
           .signInWithEmailAndPassword(data.email, data.password1)
           .then(function(res) {
             context.commit("SET_NAME", data.email);
-            context.commit("SET_PASSWORD", data.password);
             context.commit("SET_LOGIN");
+            that.getTokenFirebase();
             window.console.log("res from firebase on existing user: " + res);
             resolve("Data added to store");
           })
@@ -61,9 +75,6 @@ export default new Vuex.Store({
       });
     },
     createNewUser(context, data) {
-      context.commit("SET_NAME", data.email);
-      context.commit("SET_PASSWORD", data.password1);
-      context.commit("SET_LOGIN");
 
       firebase
         .auth()
@@ -74,7 +85,9 @@ export default new Vuex.Store({
           let userID = firebase.auth().currentUser.uid;
           let userName = firebase.auth().currentUser.displayName;
           let myUIDtoken = firebase.auth().currentUser.getIdToken();
-
+          context.commit("SET_NAME", data.email);
+          context.commit("SET_LOGIN");
+    
           if (userID) {
             window.console.log("User UID: " + userID);
             window.console.log("User Name: " + userName);
@@ -96,20 +109,25 @@ export default new Vuex.Store({
     },
     logoutUser(context) {
       window.console.log("in Logout call from store");
-      firebase
-        .auth()
-        .signOut()
-        .then(function() {
-          // Sign-out successful.
-          window.console.log("User is out in dispatch");
-          context.commit("SET_LOGOUT");
-        })
-        .catch(function(error) {
-          // An error happened.
-          window.console.log("Error in dispatch " + error);
-        });
+      return new Promise(function(resolve, reject) {
+        firebase
+          .auth()
+          .signOut()
+          .then(function() {
+            // Sign-out successful.
+            // window.console.log("User is out in dispatch");
+            resolve("Logged out");
+            context.commit("SET_LOGOUT");
+          })
+          .catch(function(error) {
+            // An error happened.
+            reject(error);
+            // window.console.log("Error in dispatch " + error);
+          });
+      });
     },
-    googleauth() {
+    googleauth(context) {
+      let that = this;
       return new Promise(function(resolve, reject) {
         firebase
           .auth()
@@ -118,7 +136,11 @@ export default new Vuex.Store({
             var token = result.credential.accessToken;
             var user = result.user;
             window.console.log("token: " + token + " ," + "user: " + user);
-            // router.push({ path: "/merchantHome" });
+            context.commit("SET_LOGIN");
+            that.dispatch("getTokenFirebase");
+            // that.getTokenFirebase();
+
+            // window.console.log("That obejct: "+ that)
             resolve("GoogleAuth success");
           })
           .catch(function(error) {
@@ -131,27 +153,5 @@ export default new Vuex.Store({
           });
       });
     },
-    fbAuth: function() {
-      return new Promise(function(resolve, reject) {
-        firebase
-          .auth()
-          .signInWithPopup(facebookProvider)
-          .then(function(result) {
-            var token = result.credential.accessToken;
-            var user = result.user;
-            window.console.log("token: " + token + " ," + "user: " + user);
-            // router.push({ path: "/merchantHome" });
-            resolve("GoogleAuth success");
-          })
-          .catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            var email = error.email;
-            var credential = error.credential;
-            window.console.log(errorCode + errorMessage + email + credential);
-            reject("GoogleAuth unsuccess");
-          });
-      });
-    }
   }
 });

@@ -1,13 +1,10 @@
 <template>
   <v-card class="nav-card">
     <v-row>
-<v-col lg="1"></v-col>
+      <v-col lg="1"></v-col>
       <v-col lg="1">
         <router-link to="/">
-          <v-img
-          max-height="40"
-          max-width="80"
-          src="../assets/lakdi-logo.png">
+          <v-img max-height="40" max-width="80" src="../assets/lakdi-logo.png">
           </v-img>
         </router-link>
       </v-col>
@@ -33,9 +30,9 @@
             <h3>Profile <span class="mdi mdi-account"></span></h3>
           </button>
         </router-link>
-          <button class="merchant-orders" @click="logout">
-            <h3 >Logout <span class="mdi mdi-logout"></span></h3>
-          </button>
+        <button class="merchant-orders" @click="logout">
+          <h3>Logout <span class="mdi mdi-logout"></span></h3>
+        </button>
       </v-col>
     </v-row>
   </v-card>
@@ -51,13 +48,28 @@ export default {
     };
   },
   methods: {
+    send() {
+      // window.console.log("I am in send method")
+      // window.console.log("My user logged?"+ this.$store.state.isLogged)
+      this.$router.push({ path: "/login" });
+    },
     search_product: function() {
       window.console.log("Product: " + this.search_input);
       this.search_input = "";
     },
     logout: function() {
-      window.console.log("Logout clicked")
-        this.$store.dispatch("logoutUser")
+      window.console.log("Logout clicked");
+      let that = this;
+      this.$store
+        .dispatch("logoutUser")
+        .then(function(res) {
+          that.send();
+          // this.$router.push({ path: "/" });
+          window.console.log("res from logout dipatch " + res);
+        })
+        .catch(function(error) {
+          window.console.log("Error in logout after dispatch: " + error);
+        });
     }
   }
 };

@@ -7,14 +7,14 @@ import newProduct from '../components/NewProduct.vue'
 import SoldProducts from '../components/SoldProducts.vue'
 import MerchantProfile from '../components/MerchantProfile.vue'
 
-import { auth ,dummy} from "../firebaseConfig";
-// import store from '../store'
+import { auth } from "../firebaseConfig";
+import store from '../store'
 
 Vue.use(VueRouter)
 
 function requireAuth (to, from, next) {
-  // if (!store.state.isLogged) 
-  if (!dummy) 
+  if (!store.state.isLogged) 
+  // if (!dummy) 
   {
     next({
       path: '/login',
@@ -26,8 +26,8 @@ function requireAuth (to, from, next) {
 }
 
 function notRequireAuth (to, from, next) {
-  // if (!store.state.isLogged) 
-  if (dummy) 
+  if (store.state.isLogged) 
+  // if (dummy) 
   {
     next({
       path: '/',

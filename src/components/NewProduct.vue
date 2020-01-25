@@ -2,6 +2,29 @@
   <div class="my_container">
     <div class="new_product_mar">
       <h2 style="color: white">Add Existing Product</h2>
+
+<!-- 
+                <v-form>
+                  <v-text-field
+                    label="Email"
+                    name="login"
+                    v-model="user.email"
+                    :rules="emailRules"
+                    prepend-icon="person"
+                    type="email"
+                    required
+                  />
+
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    v-model="user.password1"
+                    prepend-icon="lock"
+                    type="password"
+                  />
+                </v-form> -->
+
+
       <v-row>
         <v-col lg="6" class="my_new_prod_name">
           <h3>Select Category:</h3>
@@ -248,6 +271,7 @@
 </template>
 
 <script>
+import 'vuetify/dist/vuetify.min.css';
 export default {
   name: "NewProduct",
   data: function() {
@@ -315,8 +339,8 @@ export default {
         return;
       }
 
-      fetch("http://10.177.68.26:8080/product/addProduct", {
-        // fetch("product/addProduct", {
+      // fetch("http://10.177.68.26:8080/product/addProduct", {
+        fetch("product/addProduct", {
         headers: {
           "Content-Type": "application/json"
         },
@@ -358,10 +382,11 @@ export default {
         });
     },
     loadCategoryProducts: function() {
-      fetch(
-        "http://10.177.68.26:8080/product/getCategoryProducts/" +
-          this.selectedCategoryId
-      )
+      // fetch(
+      //   "http://10.177.68.26:8080/product/getCategoryProducts/" +
+      //     this.selectedCategoryId
+      // )
+      fetch("/addexisting/json")
         .then(response => {
           return response.json();
         })
@@ -374,7 +399,8 @@ export default {
     }
   },
   created: function() {
-    fetch("http://10.177.68.26:8080/product/getCategories")
+    // fetch("http://10.177.68.26:8080/product/getCategories")
+      fetch("/addexisting/json")
       .then(response => {
         return response.json();
       })
@@ -385,7 +411,8 @@ export default {
         // window.console.log("Categories: "+myJson.data);
       });
 
-    fetch("http://10.177.68.26:8080/product/getCategoryProducts/1")
+    // fetch("http://10.177.68.26:8080/product/getCategoryProducts/1")
+      fetch("/addexisting/json")
       .then(response => {
         return response.json();
       })
