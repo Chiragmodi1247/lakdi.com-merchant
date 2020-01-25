@@ -3,7 +3,7 @@
     <v-row>
 <v-col lg="1"></v-col>
       <v-col lg="1">
-        <router-link to="/merchantHome">
+        <router-link to="/">
           <v-img
           max-height="40"
           max-width="80"

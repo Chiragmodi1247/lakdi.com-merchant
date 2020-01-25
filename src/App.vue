@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <navbar />
+      <Navbar />
     </div>
     <div class="content-section">
       <v-app id="inspire">
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar";
 
 export default {
   name: "App",

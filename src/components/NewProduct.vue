@@ -79,7 +79,7 @@
           Add Product
         </button>
 
-        <router-link to="/merchantHome">
+        <router-link to="/">
           <button class="cancel_btn">
             Cancel
           </button>
@@ -238,7 +238,7 @@
         Add Product
       </button>
 
-      <router-link to="/merchantHome">
+      <router-link to="/">
         <button class="cancel_btn">
           Cancel
         </button>
