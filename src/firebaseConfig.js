@@ -27,7 +27,7 @@ const currentUser = auth.currentUser
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const facebookProvider = new firebase.auth.FacebookAuthProvider();
 
-const dummy = false;
+const dummy = true;
 
 export {
     db,
