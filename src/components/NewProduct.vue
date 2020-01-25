@@ -267,7 +267,7 @@ export default {
       },
       product: {
         productId: null,
-        categoryId: null,
+        categoryId: "1",
         productName: null,
         imageUrl: null,
         productAttributes: { brandName: null, color: null, material: null },
@@ -299,10 +299,19 @@ export default {
     },
     addProduct: function() {
       //   window.console.log(this.product);
-      if(this.product.productName === null || this.product.productId=== null || this.product.categoryId===null || this.product.productAttributes.brandName === null || this.product.productAttributes.color=== null || this.product.productAttributes.material === null || this.product.imageUrl=== null || this.product.productDescription === null || this.product.productPrice=== null)
-      {
-        alert("Please enter all fields")
-        window.console.log("called from validation")
+      if (
+        this.product.productName === null ||
+        this.product.productId === null ||
+        this.product.categoryId === null ||
+        this.product.productAttributes.brandName === null ||
+        this.product.productAttributes.color === null ||
+        this.product.productAttributes.material === null ||
+        this.product.imageUrl === null ||
+        this.product.productDescription === null ||
+        this.product.productPrice === null
+      ) {
+        alert("Please enter all fields");
+        window.console.log("called from validation");
         return;
       }
 
@@ -323,10 +332,13 @@ export default {
         });
     },
     addExistingProduct: function() {
-      if(this.existingProduct.productId === null || this.existingProduct.productQuantity=== null || this.existingProduct.productPrice===null)
-      {
-        alert("Please enter all fields")
-        window.console.log("called from validation")
+      if (
+        this.existingProduct.productId === null ||
+        this.existingProduct.productQuantity === null ||
+        this.existingProduct.productPrice === null
+      ) {
+        alert("Please enter all fields");
+        window.console.log("called from validation");
         return;
       }
       fetch("/addexisting/json", {
@@ -371,6 +383,17 @@ export default {
         this.selectedCategory = myJson.data[0].categoryName;
         this.selectedCategoryId = myJson.data[0].categoryId;
         // window.console.log("Categories: "+myJson.data);
+      });
+
+    fetch("http://10.177.68.26:8080/product/getCategoryProducts/1")
+      .then(response => {
+        return response.json();
+      })
+      .then(myJson => {
+        window.console.log("Selected Category: " + this.selectedCategoryId);
+        this.categoryProducts = myJson.data;
+        // this.category1 = myJson.data[0].categoryName;
+        // window.console.log("Products: "+myJson.data);
       });
   }
 };

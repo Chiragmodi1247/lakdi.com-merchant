@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import About from '../views/About.vue'
 import Login from '../views/Login.vue'
 import merchantHome from '../views/MerchantHome.vue'
 import newProduct from '../components/NewProduct.vue'
@@ -9,22 +8,38 @@ import SoldProducts from '../components/SoldProducts.vue'
 import MerchantProfile from '../components/MerchantProfile.vue'
 
 import { auth ,dummy} from "../firebaseConfig";
-// import store from '../store'
+import store from '../store'
 
 Vue.use(VueRouter)
 
 function requireAuth (to, from, next) {
-  // if (!store.state.isLogged) 
-  if (!dummy) 
+  if (!store.state.isLogged) 
+  // if (!dummy) 
   {
     next({
       path: '/login',
-      query: { redirect: to.fullPath }
+      // query: { redirect: to.fullPath }
     })
   } else {
     next()
   }
 }
+
+function notRequireAuth (to, from, next) {
+  // if (!store.state.isLogged) 
+  if (dummy) 
+  {
+    next({
+      path: '/merchantHome',
+      // query: { redirect: to.fullPath }
+    })
+  } else {
+    next({
+      // query: { redirect: to.fullPath }
+    })
+  }
+}
+
 
 const router = new VueRouter({
   mode: 'history',
@@ -34,13 +49,12 @@ const router = new VueRouter({
     { path: '/merchantHome', component: merchantHome, beforeEnter: requireAuth  },
     { path: '/profile', component: MerchantProfile, beforeEnter: requireAuth  },
     { path: '/soldproducts', component: SoldProducts, beforeEnter: requireAuth  },
-    { path: '/about', component: About },
     { path: '/addProduct', component: newProduct, beforeEnter: requireAuth  },
-    { path: '/login', component: Login },
+    { path: '/login', component: Login, beforeEnter: notRequireAuth },
     { path: '/logout',
       beforeEnter (to, from, next) {
         auth.logout()
-        next('/')
+        next('/login')
       }
     }
   ]

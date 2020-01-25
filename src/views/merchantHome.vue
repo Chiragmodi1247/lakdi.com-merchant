@@ -2,19 +2,7 @@
   <div>
     <div class="data">
       <v-row>
-        <v-col lg="3">
-          <v-row>
-            <v-col>
-              <h2>Total ammount</h2>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <h1 style="color: white">45,999</h1>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col lg="3">
+        <v-col lg="4">
           <v-row>
             <v-col>
               <h2>Total Product Sold</h2>
@@ -26,9 +14,12 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col lg="6">
+        <v-col lg="2">
+        </v-col>
+        <v-col lg="5">
           <Graph />
         </v-col>
+
       </v-row>
     </div>
 
@@ -167,14 +158,14 @@ export default {
   created: function() {
     window.console.log("Merchant Home created");
       // window.console.log(this.products.length);
-    fetch("http://10.177.69.78:8080/productdetails/merchantProduct/mer1")
-      .then(response => {
-        return response.json();
-      })
-      .then(myJson => {
-      this.products = myJson.data;
-      window.console.log(myJson.data);
-      });
+    // fetch("http://10.177.69.50:8762/spring-cloud-eureka-client-product/productdetails/merchantProduct/mer1")
+    //   .then(response => {
+    //     return response.json();
+    //   })
+    //   .then(myJson => {
+    //   this.products = myJson.data;
+    //   window.console.log(myJson.data);
+    //   });
   }
 };
 </script>
@@ -182,6 +173,7 @@ export default {
 <style scoped>
 .data {
   text-align: center;
+  /* background: rgb(0, 0, 168); */
   background-image: linear-gradient(rgb(105, 29, 228), rgb(151, 151, 151));
   /* background: rgb(105, 29, 228); */
   height: 30vh;
@@ -189,9 +181,10 @@ export default {
 }
 .no_product_box {
   text-align: center;
-  background-image: linear-gradient(rgb(151, 151, 151), white);
+  /* background-image: linear-gradient(rgb(151, 151, 151), white); */
 }
 .products-box {
+  /* background: rgb(0, 0, 168); */
   padding: 50px;
   background-image: linear-gradient(rgb(151, 151, 151), white);
 }
