@@ -315,8 +315,8 @@ export default {
         return;
       }
 
-      fetch("http://10.177.68.26:8080/product/addProduct", {
-        // fetch("product/addProduct", {
+      // fetch("http://10.177.68.26:8080/product/addProduct", {
+        fetch("product/addProduct", {
         headers: {
           "Content-Type": "application/json"
         },
