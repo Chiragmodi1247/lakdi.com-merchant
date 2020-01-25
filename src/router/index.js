@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
+import Login from '../views/login.vue'
 import merchantHome from '../views/MerchantHome.vue'
 import newProduct from '../components/NewProduct.vue'
 import SoldProducts from '../components/SoldProducts.vue'
 import MerchantProfile from '../components/MerchantProfile.vue'
 
 import { auth ,dummy} from "../firebaseConfig";
-import store from '../store'
+// import store from '../store'
 
 Vue.use(VueRouter)
 
 function requireAuth (to, from, next) {
-  if (!store.state.isLogged) 
-  // if (!dummy) 
+  // if (!store.state.isLogged) 
+  if (!dummy) 
   {
     next({
       path: '/login',
@@ -30,7 +30,7 @@ function notRequireAuth (to, from, next) {
   if (dummy) 
   {
     next({
-      path: '/merchantHome',
+      path: '/',
       // query: { redirect: to.fullPath }
     })
   } else {
@@ -46,7 +46,7 @@ const router = new VueRouter({
   base: __dirname,
   routes: [
     { path: '/home', component: Home, beforeEnter: requireAuth  },
-    { path: '/merchantHome', component: merchantHome, beforeEnter: requireAuth  },
+    { path: '/', component: merchantHome, beforeEnter: requireAuth  },
     { path: '/profile', component: MerchantProfile, beforeEnter: requireAuth  },
     { path: '/soldproducts', component: SoldProducts, beforeEnter: requireAuth  },
     { path: '/addProduct', component: newProduct, beforeEnter: requireAuth  },

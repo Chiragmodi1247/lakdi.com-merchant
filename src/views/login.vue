@@ -113,7 +113,7 @@
               </v-card-text>
               <v-container fluid>
                 <v-row align="center" justify="center">
-                  <router-link to="/merchantHome"
+                  <router-link to="/"
                     ><v-btn color="primary" @click="registerNewUser">
                       Register
                     </v-btn></router-link
@@ -183,7 +183,7 @@ export default {
         this.$store
           .dispatch("loginUser", this.user)
           .then(function(res) {
-            router.push({ path: "/merchantHome" });
+            router.push({ path: "/" });
             window.console.log("res from actions dispatch return " + res);
           })
           .catch(function(error) {
