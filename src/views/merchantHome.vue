@@ -10,23 +10,20 @@
           </v-row>
           <v-row>
             <v-col>
-              <h1 style="color: white">30</h1>
+              <h1 style="color: white">{{mySoldProduct}}</h1>
             </v-col>
           </v-row>
         </v-col>
-        <v-col lg="2">
-        </v-col>
+        <v-col lg="2"> </v-col>
         <v-col lg="5">
           <Graph />
         </v-col>
-
       </v-row>
     </div>
 
     <div v-if="!isPresent" class="no_product_box">
       <h1>You don't have any added products</h1>
     </div>
-
 
     <div v-if="isPresent" class="products-box">
       <v-row>
@@ -36,7 +33,7 @@
           v-bind:key="index"
           class="dummy-for-z"
         >
-          <Product :product_prop="product" :showImage="showImage"/>
+          <Product :product_prop="product" :showImage="showImage" />
         </v-col>
       </v-row>
     </div>
@@ -50,7 +47,6 @@
           id="my_product_img1"
         ></v-img>
     </div> -->
-
   </div>
 </template>
 
@@ -63,82 +59,9 @@ export default {
   data: function() {
     return {
       isPresent: true,
-      modalImageUrl: '',
-      products: [
-        // {
-        //   productId: "1",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        // },
-        // {
-        //   productId: "2",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 10,
-        //   merchantPrice: 10000,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        // },
-        // {
-        //   productId: "3",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 90,
-        //   merchantPrice: 600,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-        // },
-        // {
-        //   productId: "4",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1507904953637-96429a46671a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80"
-        // },
-        // {
-        //   productId: "5",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1545034210-264a82b4688b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        // },
-        // {
-        //   productId: "6",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1559066224-5d377095e655?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-        // },
-        // {
-        //   productId: "7",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1541123603104-512919d6a96c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        // },
-        // {
-        //   productId: "8",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        // },
-        // {
-        //   productId: "9",
-        //   productName: "Red Sofa by Apple",
-        //   productQuantity: 20,
-        //   merchantPrice: 1999,
-        //   imageUrl:
-        //     "https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-        // },
-
-      ]
+      modalImageUrl: "",
+      products: [],
+      mySoldProduct: null
     };
   },
   components: {
@@ -150,23 +73,61 @@ export default {
     popup: function(index) {
       alert("U clicked on " + index);
     },
-    showImage: function(url){
-      window.console.log('showImage url', url);
+    showImage: function(url) {
+      window.console.log("showImage url", url);
       this.modalImageUrl = url;
+    },
+    getSoldDetails: function() {
+let that = this;
+    fetch("/backend/merchant/get", {
+      headers: {
+        token: localStorage.getItem("myToken")
+      },
+      method: "GET"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(myJson => {
+        if (myJson.success === false) alert("Error fetching profile");
+        that.mySoldProduct = myJson.data.totalProductsSold;
+      })
+      .catch(function(err) {
+        that.$router.push({ path: "/login" });
+        alert("Error in login!");
+        window.console.log("Error in merchant: " + err);
+      }); 
+
+
     }
   },
   created: function() {
+    let that = this;
     window.console.log("Merchant Home created");
-      // window.console.log(this.products.length);
-    // fetch("http://10.177.69.50:8762/spring-cloud-eureka-client-product/productdetails/merchantProduct/mer1")
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(myJson => {
-    //   this.products = myJson.data;
-    //   window.console.log(myJson.data);
-    //   });
-  }
+
+    fetch("/backend/merchant/productdetails/merchantProduct", {
+      headers: {
+        "token": localStorage.getItem("myToken")
+      },
+      method: "GET"
+    })
+      .then(response => {
+        window.console.log("Return from created merchanthome: "+ response);
+        return response.json();
+      })
+      .then(myJson => {
+        this.products = myJson.data;
+        window.console.log("Return from created merchanthome"+ myJson.data);
+      })
+      .catch(function(error) {
+        that.$router.push({ path: "/login" });
+        alert("Error in login!");
+        window.console.log("You can't log in because: " + error);
+      });
+
+setTimeout(that.getSoldDetails , 1000);
+
+}
 };
 </script>
 

@@ -37,14 +37,9 @@
                 </v-row>
 
                 <v-row align="center" justify="center">
-                  <v-col lg="3">
+                  <v-col lg="6">
                     <v-btn color="red" @click="googleLog">
-                      Google
-                    </v-btn>
-                  </v-col>
-                  <v-col lg="3">
-                    <v-btn color="primary" @click="facebookLog">
-                      Facebook
+                      Login Using Google
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -114,7 +109,11 @@
               <v-container fluid>
                 <v-row align="center" justify="center">
                   <router-link to="/"
+<<<<<<< HEAD
                     ><v-btn color="primary" @click="registerNewUser">
+=======
+                    ><v-btn :disabled="validNew" color="primary" @click="registerNewUser">
+>>>>>>> 3655715b3561e54956b65451696ec8574f5de97e
                       Register
                     </v-btn></router-link
                   >
@@ -134,14 +133,30 @@
           </v-col>
         </v-row>
       </v-container>
+
+      <!-- <v-snackbar
+        v-model="snackbar"
+        :bottom="y === 'bottom'"
+        :color="color"
+        :left="x === 'left'"
+        :multi-line="mode === 'multi-line'"
+        :right="x === 'right'"
+        :timeout="timeout"
+        :top="y === 'top'"
+        :vertical="mode === 'vertical'"
+      >
+        {{ text }}
+        <v-btn dark text @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar> -->
     </div>
   </div>
 </template>
 
 <script>
-// import { facebookProvider, googleProvider, auth } from "../firebaseConfig";
-// import {auth} from '../firebaseConfig'
-import router from "../router/index";
+import { googleProvider, auth } from "../firebaseConfig";
+// import router from "../router/index";
 export default {
   name: "home",
   components: {},
@@ -153,6 +168,11 @@ export default {
         email: "",
         password1: ""
       },
+      emptyDTO: {
+        merchantId: "",
+        name: "",
+        email: ""
+      },
       password2: "",
       forLogin: true,
       minPasswordInput: "true",
@@ -162,7 +182,14 @@ export default {
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           "E-mail must be valid",
         v => !!v || "Field can not be empty"
-      ]
+      ],
+      color: "",
+      mode: "",
+      snackbar: this.$store.state.snakbar,
+      text: "Hello, I'm a snackbar",
+      timeout: 6000,
+      x: null,
+      y: "top"
     };
   },
   computed: {
@@ -178,18 +205,97 @@ export default {
     }
   },
   methods: {
-    manualLogin: function() {
-      if (this.validOld) {
-        this.$store
-          .dispatch("loginUser", this.user)
-          .then(function(res) {
-            router.push({ path: "/" });
-            window.console.log("res from actions dispatch return " + res);
+    sendOldToken() {
+      let that = this;
+      auth.currentUser.getIdTokenResult(true).then(function(token) {
+        window.console.log("Received token in get token: " + token.token);
+        fetch("/backend/merchant/verify", {
+          headers: {
+            "token": token.token
+          },
+          method: "GET"
+        })
+          .then(response => {
+            window.console.log("Verified merchant: "+ response.success)
+            // // eslint-disable-next-line no-debugger
+            // debugger
+            return response.json();
+          })
+          .then(myJson => {
+            // if (myJson.success === false) alert("Error fetching profile");
+            // // eslint-disable-next-line no-debugger
+            // debugger
+            if(myJson.success){
+              window.console.log("Success message: " + myJson.success);
+              localStorage.setItem("myToken", token.token);
+              that.send();
+            }
+            else{
+              alert("You're not a merchant")
+            }
           })
           .catch(function(error) {
-            window.console.log(
-              "Error in manually login after dispatch: " + error
-            );
+            that.$router.push({ path: "/login" });
+            alert("Error in login!");
+            window.console.log("You can't log in because: " + error);
+          });
+      });
+    },
+    sendNewToken() {
+      let that = this;
+      auth.currentUser.getIdTokenResult(true).then(function(token) {
+        window.console.log("Received token in get token: " + token.token);
+        fetch("/backend/merchant/add", {
+          headers: {
+            "token": token.token,
+            "Content-Type": "application/json"
+          },
+          method: "POST",
+          body: JSON.stringify(that.emptyDTO)
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(myJson => {
+            if (myJson.success === false) alert("Error fetching profile");
+            window.console.log("Success message: " + myJson.success);
+            localStorage.setItem("myToken", token.token);
+            that.send();
+          })
+          .catch(function(error) {
+            that.$router.push({ path: "/login" });
+            alert("Error in login!");
+            window.console.log("You can't log in because: " + error);
+          });
+      });
+    },
+    send() {
+      window.console.log("In send method");
+      this.$router.push({ path: "/" });
+    },
+    manualLogin: function() {
+      let that = this;
+      if (this.validOld) {
+        window.console.log(
+          "Email: " + this.user.email + " pass: " + this.user.password1
+        );
+        auth
+          .signInWithEmailAndPassword(this.user.email, this.user.password1)
+          .then(function(res) {
+<<<<<<< HEAD
+            router.push({ path: "/" });
+            window.console.log("res from actions dispatch return " + res);
+=======
+            window.console.log("res from firebase on existing user: " + res);
+            that.sendOldToken();
+>>>>>>> 3655715b3561e54956b65451696ec8574f5de97e
+          })
+          .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+            window.console.log("Error code: " + errorCode);
+            window.console.log("Error msg: " + errorMessage);
           });
       }
     },
@@ -197,78 +303,47 @@ export default {
       this.forLogin = !this.forLogin;
     },
     registerNewUser: function() {
+      let that = this;
       if (this.validNew) {
-        this.$store.dispatch("createNewUser", this.user);
-        // auth.createUserWithEmailAndPassword(this.user.email, this.user.password1)
-        // window.console.log("Email:"+this.user.email+" Password: "+ this.user.password1)
+        window.console.log(
+          "Email: " + this.user.email + " pass: " + this.user.password1
+        );
+        auth
+          .createUserWithEmailAndPassword(this.user.email, this.user.password1)
+          .then(function(res) {
+            window.console.log("res from firebase on New user: " + res);
+            that.sendNewToken();
+          })
+          .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+            window.console.log("Error code: " + errorCode);
+            window.console.log("Error msg: " + errorMessage);
+          });
       }
-
-      // this.$store.dispatch("createNewUser", this.user);
-
-      // window.console.log("New user registered");
     },
     googleLog: function() {
-        this.$store.dispatch("googleauth")
-          .then(function(res) {
-            // router.push({ path: "/merchantHome" });
-            window.console.log("res from googlelog dispatch return " + res);
-          })
-          .catch(function(error) {
-            window.console.log(
-              "Error in google login after dispatch: " + error
-            );
-          });
-    },
-    facebookLog: function() {
-        this.$store.dispatch("fbAuth")
-          .then(function(res) {
-            // router.push({ path: "/merchantHome" });
-            window.console.log("res from fblog dispatch return " + res);
-          })
-          .catch(function(error) {
-            window.console.log(
-              "Error in fb login after dispatch: " + error
-            );
-          });
+      let that = this;
+      auth
+        .signInWithPopup(googleProvider)
+        .then(function() {
+          that.sendOldToken();
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;
+          var credential = error.credential;
+          window.console.log(
+            "Error in google provider: " +
+              errorCode +
+              errorMessage +
+              email +
+              credential
+          );
+        });
     }
-    // googleAuth: function() {
-    //   auth
-    //     .signInWithPopup(googleProvider)
-    //     .then(function(result) {
-    //       let token = result.credential.accessToken;
-    //       let user = result.user;
-    //       window.console.log("User: " + user);
-    //       window.console.log("Token: " + token);
-    //     })
-    //     .catch(function(error) {
-    //       window.console.log(error);
-    //     });
-    //   // alert("Hello "+ this.name)
-    // },
-    // facebookAuth: function() {
-    //   auth
-    //     .signInWithPopup(facebookProvider)
-    //     .then(function(result) {
-    //       let token = result.credential.accessToken;
-    //       let user = result.user;
-    //       window.console.log("User: " + user);
-    //       window.console.log("Token: " + token);
-    //     })
-    //     .catch(function(error) {
-    //       window.console.log(error);
-    //     });
-    //   // alert("Hello "+ this.name)
-    // },
-
-    // currentUser: function() {
-    //   let user = auth.currentUser;
-    //   window.console.log(user.email);
-    // },
-    // deleteUser: function() {
-    //   let user = auth.currentUser;
-
-    //   user.delete();
-    // }
   },
   props: {
     source: String

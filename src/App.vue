@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <navbar />
+      <Navbar />
     </div>
     <div class="content-section">
       <v-app id="inspire">
@@ -21,10 +21,6 @@ export default {
   components: {
     Navbar
   },
-
-  data: () => ({
-    //
-  })
 };
 </script>
 

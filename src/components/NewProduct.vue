@@ -102,7 +102,7 @@
           />
         </v-col>
       </v-row>
-      <v-row>
+      <!-- <v-row>
         <v-col lg="6" class="my_new_prod_name">
           <h3>Product Id:</h3>
         </v-col>
@@ -114,7 +114,7 @@
             class="input-box"
           />
         </v-col>
-      </v-row>
+      </v-row> -->
 
       <v-row>
         <v-col lg="6" class="my_new_prod_name">
@@ -214,6 +214,20 @@
           />
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Quantity:</h3>
+        </v-col>
+        <v-col>
+          <input
+            class="input-box"
+            v-model="product.productDetailsDto.productQuantity"
+            type="number"
+            placeholder="price"
+          />
+        </v-col>
+      </v-row>
     </v-card>
 
     <!-- <table id="price_input">
@@ -248,6 +262,8 @@
 </template>
 
 <script>
+import "vuetify/dist/vuetify.min.css";
+import store from "../store";
 export default {
   name: "NewProduct",
   data: function() {
@@ -260,10 +276,10 @@ export default {
       categoryProducts: [],
       product1: null,
       existingProduct: {
-        productId: null,
+        productId: "",
         productPrice: null,
-        merchantId: "mer1",
-        productQuantity: null
+        productQuantity: null,
+        totalProductsSold: 0
       },
       product: {
         productId: null,
@@ -274,8 +290,8 @@ export default {
         productDescription: null,
         productPrice: null,
         productDetailsDto: {
-          merchantId: "mer1",
-          productQuantity: "1"
+          merchantId: "",
+          productQuantity: ""
         }
       }
     };
@@ -285,23 +301,13 @@ export default {
       let image = document.getElementById("output");
       image.src = this.image_url;
     },
-    addInput: function() {
-      let keyinput = document.getElementById("keyinputbox");
-      let valueinput = document.getElementById("valueinputbox");
-      if (keyinput.value !== "" && valueinput.value !== "") {
-        this.product.productAttributes.push({
-          key: keyinput.value,
-          value: valueinput.value
-        });
-        keyinput.value = "";
-        valueinput.value = "";
-      }
-    },
     addProduct: function() {
-      //   window.console.log(this.product);
+      window.console.log(
+        "Before fetching addproduct: " + localStorage.getItem("myToken")
+      );
+      let that = this;
       if (
         this.product.productName === null ||
-        this.product.productId === null ||
         this.product.categoryId === null ||
         this.product.productAttributes.brandName === null ||
         this.product.productAttributes.color === null ||
@@ -315,16 +321,24 @@ export default {
         return;
       }
 
+<<<<<<< HEAD
       // fetch("http://10.177.68.26:8080/product/addProduct", {
         fetch("product/addProduct", {
+=======
+      fetch("/backend/product/addProduct", {
+        // fetch("product/addProduct", {
+>>>>>>> 3655715b3561e54956b65451696ec8574f5de97e
         headers: {
+          "token": localStorage.getItem("myToken"),
           "Content-Type": "application/json"
         },
         method: "POST",
         body: JSON.stringify(this.product)
       })
         .then(function(res) {
-          window.console.log(res);
+          window.console.log("After adding new product: " + res.status);
+          that.$router.push({ path: "/" });
+
           // if(res.status === 200)
         })
         .catch(function(res) {
@@ -332,6 +346,7 @@ export default {
         });
     },
     addExistingProduct: function() {
+      let that = this;
       if (
         this.existingProduct.productId === null ||
         this.existingProduct.productQuantity === null ||
@@ -341,16 +356,18 @@ export default {
         window.console.log("called from validation");
         return;
       }
-      fetch("/addexisting/json", {
+      fetch("/backend/merchant/productdetails/addExistingProduct", {
         // fetch("product/addProduct", {
         headers: {
+          "token": localStorage.getItem("myToken"),
           "Content-Type": "application/json"
         },
         method: "POST",
         body: JSON.stringify(this.existingProduct)
       })
         .then(function(res) {
-          window.console.log(res);
+          window.console.log("response adding existing product: " + res);
+          that.$router.push({ path: "/" });
           // if(res.status === 200)
         })
         .catch(function(res) {
@@ -358,23 +375,25 @@ export default {
         });
     },
     loadCategoryProducts: function() {
-      fetch(
-        "http://10.177.68.26:8080/product/getCategoryProducts/" +
-          this.selectedCategoryId
-      )
+      fetch("/backend/product/getCategoryProducts/" + this.selectedCategoryId)
         .then(response => {
           return response.json();
         })
         .then(myJson => {
           window.console.log("Selected Category: " + this.selectedCategoryId);
           this.categoryProducts = myJson.data;
-          // this.category1 = myJson.data[0].categoryName;
-          // window.console.log("Products: "+myJson.data);
         });
     }
   },
   created: function() {
-    fetch("http://10.177.68.26:8080/product/getCategories")
+    let that = this;
+    window.console.log("My token in new product: " + store.state.myToken);
+    fetch("/backend/product/getCategories", {
+      headers: {
+        "token": store.state.myToken
+      },
+      method: "GET"
+    })
       .then(response => {
         return response.json();
       })
@@ -382,18 +401,36 @@ export default {
         this.categories = myJson.data;
         this.selectedCategory = myJson.data[0].categoryName;
         this.selectedCategoryId = myJson.data[0].categoryId;
-        // window.console.log("Categories: "+myJson.data);
+      })
+      .catch(function(err) {
+        window.console.log("Error getting category: " + err);
+        that.$router.push({ path: "/login" });
+        alert("Login first!");
       });
 
-    fetch("http://10.177.68.26:8080/product/getCategoryProducts/1")
+    that.product.productId = randomStr(10, "123456789abcdefghij");
+
+    function randomStr(len, arr) {
+      let ans = "";
+      for (let i = len; i > 0; i--) {
+        ans += arr[Math.floor(Math.random() * arr.length)];
+      }
+      return ans;
+    }
+
+    window.console.log("ProductID: " + that.product.productId);
+    fetch("/backend/product/getCategoryProducts/1", {
+      headers: {
+        "token": store.state.myToken
+      },
+      method: "GET"
+    })
       .then(response => {
         return response.json();
       })
       .then(myJson => {
         window.console.log("Selected Category: " + this.selectedCategoryId);
         this.categoryProducts = myJson.data;
-        // this.category1 = myJson.data[0].categoryName;
-        // window.console.log("Products: "+myJson.data);
       });
   }
 };
