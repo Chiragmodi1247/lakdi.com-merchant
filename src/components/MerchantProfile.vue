@@ -17,7 +17,7 @@
             <v-col>
               <input
                 type="email"
-                v-model="mydata.email"
+                v-model="sendData.email"
                 class="text_input"
                 id="mer_email"
               />
@@ -28,7 +28,11 @@
               <h2>Name:</h2>
             </v-col>
             <v-col>
-              <input type="text" v-model="mydata.name" class="text_input" />
+              <input
+                type="text"
+                v-model="sendData.name"
+                class="text_input"
+              />
             </v-col>
           </v-row>
           <v-row>
@@ -38,7 +42,7 @@
             <v-col>
               <input
                 type="tel"
-                v-model="mydata.contactNo"
+                v-model="sendData.contactNo"
                 id="tel_number"
                 class="text_input"
                 pattern="[0-9]{10}"
@@ -84,10 +88,12 @@ export default {
   data: function() {
     return {
       mydata: {
-        name: "",
-        contactNo: "",
         totalProductsSold: "",
         merchantRating: "",
+      },
+      sendData: {
+        name: "",
+        contactNo: "",
         email: ""
       }
     };
@@ -100,6 +106,27 @@ export default {
         alert("Please add a valid number");
         return false;
       }
+      fetch("/backend/merchant/update", {
+        headers: {
+          "token": localStorage.getItem("myToken"),
+          "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(this.sendData)
+      })
+        .then(response => {
+          window.console.log("Return from created update profile: " + response);
+          return response.json();
+        })
+        .then(myJson => {
+          // this.products = myJson.data;
+          window.console.log(
+            "Return from created update profile" + myJson.data
+          );
+        })
+        .catch(function(res) {
+          window.console.log(res);
+        });
     }
   },
   created: function() {
@@ -107,7 +134,7 @@ export default {
     window.console.log("In profile created ");
     fetch("/backend/merchant/get", {
       headers: {
-        "token": localStorage.getItem("myToken")
+        token: localStorage.getItem("myToken")
       },
       method: "GET"
     })
@@ -117,15 +144,20 @@ export default {
         return response.json();
       })
       .then(myJson => {
-        if (myJson.success === false)
-        alert("Error fetching profile")
-          window.console.log("Success message: " + myJson.success);
+        if (myJson.success === false) alert("Error fetching profile");
+        window.console.log("Success message: " + myJson.success);
 
-        that.mydata = myJson.data;
+        that.sendData.email = myJson.data.email;
+        that.sendData.name = myJson.data.name;
+        that.sendData.contactNo = myJson.data.contactNo;
+
+        that.mydata.totalProductsSold = myJson.data.totalProductsSold;
+        that.mydata.merchantRating = myJson.data.merchantRating;
+
         window.console.log("Return from created profile json" + myJson.data);
       })
       .catch(function(err) {
-                that.$router.push({ path: "/login" });
+        that.$router.push({ path: "/login" });
         alert("Error in login!");
         window.console.log("Error in merchant: " + err);
       });

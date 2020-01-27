@@ -109,7 +109,7 @@
               <v-container fluid>
                 <v-row align="center" justify="center">
                   <router-link to="/"
-                    ><v-btn color="primary" @click="registerNewUser">
+                    ><v-btn :disabled="validNew" color="primary" @click="registerNewUser">
                       Register
                     </v-btn></router-link
                   >
@@ -205,20 +205,30 @@ export default {
       let that = this;
       auth.currentUser.getIdTokenResult(true).then(function(token) {
         window.console.log("Received token in get token: " + token.token);
-        fetch("/backend/merchant/productdetails/merchantProduct", {
+        fetch("/backend/merchant/verify", {
           headers: {
             "token": token.token
           },
           method: "GET"
         })
           .then(response => {
+            window.console.log("Verified merchant: "+ response.success)
+            // // eslint-disable-next-line no-debugger
+            // debugger
             return response.json();
           })
           .then(myJson => {
-            if (myJson.success === false) alert("Error fetching profile");
-            window.console.log("Success message: " + myJson.success);
-            localStorage.setItem("myToken", token.token);
-            that.send();
+            // if (myJson.success === false) alert("Error fetching profile");
+            // // eslint-disable-next-line no-debugger
+            // debugger
+            if(myJson.success){
+              window.console.log("Success message: " + myJson.success);
+              localStorage.setItem("myToken", token.token);
+              that.send();
+            }
+            else{
+              alert("You're not a merchant")
+            }
           })
           .catch(function(error) {
             that.$router.push({ path: "/login" });
