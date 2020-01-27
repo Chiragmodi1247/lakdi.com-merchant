@@ -9,7 +9,7 @@ module.exports = {
     },
     proxy: {
       '^/backend': {
-        target: 'http://10.177.68.26:8111/',
+        target: 'http://172.16.29.144:8111/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {'^/backend' : ''}

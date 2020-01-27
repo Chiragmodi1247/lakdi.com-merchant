@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Product from "../components/Product";
+import Product from "../components/product";
 // import MerchantData from "../components/MerchantData";
 import Graph from "../components/Graph";
 export default {

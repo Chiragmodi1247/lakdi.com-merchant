@@ -28,11 +28,7 @@
               <h2>Name:</h2>
             </v-col>
             <v-col>
-              <input
-                type="text"
-                v-model="sendData.name"
-                class="text_input"
-              />
+              <input type="text" v-model="sendData.name" class="text_input" />
             </v-col>
           </v-row>
           <v-row>
@@ -89,7 +85,7 @@ export default {
     return {
       mydata: {
         totalProductsSold: "",
-        merchantRating: "",
+        merchantRating: ""
       },
       sendData: {
         name: "",
@@ -100,6 +96,7 @@ export default {
   },
   methods: {
     validateData: function() {
+      let that = this;
       let phoneno = /^\d{10}$/;
       let inputNumber = document.getElementById("tel_number");
       if (!inputNumber.value.match(phoneno)) {
@@ -119,7 +116,7 @@ export default {
           return response.json();
         })
         .then(myJson => {
-          // this.products = myJson.data;
+          that.$router.push({ path: "/" });
           window.console.log(
             "Return from created update profile" + myJson.data
           );
@@ -134,7 +131,7 @@ export default {
     window.console.log("In profile created ");
     fetch("/backend/merchant/get", {
       headers: {
-        token: localStorage.getItem("myToken")
+        "token": localStorage.getItem("myToken")
       },
       method: "GET"
     })
