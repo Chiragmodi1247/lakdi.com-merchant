@@ -109,11 +109,7 @@
               <v-container fluid>
                 <v-row align="center" justify="center">
                   <router-link to="/"
-<<<<<<< HEAD
-                    ><v-btn color="primary" @click="registerNewUser">
-=======
                     ><v-btn :disabled="validNew" color="primary" @click="registerNewUser">
->>>>>>> 3655715b3561e54956b65451696ec8574f5de97e
                       Register
                     </v-btn></router-link
                   >
@@ -282,13 +278,8 @@ export default {
         auth
           .signInWithEmailAndPassword(this.user.email, this.user.password1)
           .then(function(res) {
-<<<<<<< HEAD
-            router.push({ path: "/" });
-            window.console.log("res from actions dispatch return " + res);
-=======
             window.console.log("res from firebase on existing user: " + res);
             that.sendOldToken();
->>>>>>> 3655715b3561e54956b65451696ec8574f5de97e
           })
           .catch(function(error) {
             var errorCode = error.code;

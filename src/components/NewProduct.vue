@@ -321,13 +321,8 @@ export default {
         return;
       }
 
-<<<<<<< HEAD
-      // fetch("http://10.177.68.26:8080/product/addProduct", {
-        fetch("product/addProduct", {
-=======
       fetch("/backend/product/addProduct", {
         // fetch("product/addProduct", {
->>>>>>> 3655715b3561e54956b65451696ec8574f5de97e
         headers: {
           "token": localStorage.getItem("myToken"),
           "Content-Type": "application/json"
