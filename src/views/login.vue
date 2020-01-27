@@ -39,7 +39,7 @@
                 <v-row align="center" justify="center">
                   <v-col lg="6">
                     <v-btn color="red" @click="googleLog">
-                     Login Using Google
+                      Login Using Google
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -129,13 +129,29 @@
           </v-col>
         </v-row>
       </v-container>
+
+      <!-- <v-snackbar
+        v-model="snackbar"
+        :bottom="y === 'bottom'"
+        :color="color"
+        :left="x === 'left'"
+        :multi-line="mode === 'multi-line'"
+        :right="x === 'right'"
+        :timeout="timeout"
+        :top="y === 'top'"
+        :vertical="mode === 'vertical'"
+      >
+        {{ text }}
+        <v-btn dark text @click="snackbar = false">
+          Close
+        </v-btn>
+      </v-snackbar> -->
     </div>
   </div>
 </template>
 
 <script>
-// import { facebookProvider, googleProvider, auth } from "../firebaseConfig";
-// import {auth} from '../firebaseConfig'
+import { googleProvider, auth } from "../firebaseConfig";
 // import router from "../router/index";
 export default {
   name: "home",
@@ -148,6 +164,11 @@ export default {
         email: "",
         password1: ""
       },
+      emptyDTO: {
+        merchantId: "",
+        name: "",
+        email: ""
+      },
       password2: "",
       forLogin: true,
       minPasswordInput: "true",
@@ -157,7 +178,14 @@ export default {
           /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
           "E-mail must be valid",
         v => !!v || "Field can not be empty"
-      ]
+      ],
+      color: "",
+      mode: "",
+      snackbar: this.$store.state.snakbar,
+      text: "Hello, I'm a snackbar",
+      timeout: 6000,
+      x: null,
+      y: "top"
     };
   },
   computed: {
@@ -173,23 +201,82 @@ export default {
     }
   },
   methods: {
+    sendOldToken() {
+      let that = this;
+      auth.currentUser.getIdTokenResult(true).then(function(token) {
+        window.console.log("Received token in get token: " + token.token);
+        fetch("/backend/merchant/productdetails/merchantProduct", {
+          headers: {
+            "token": token.token
+          },
+          method: "GET"
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(myJson => {
+            if (myJson.success === false) alert("Error fetching profile");
+            window.console.log("Success message: " + myJson.success);
+            localStorage.setItem("myToken", token.token);
+            that.send();
+          })
+          .catch(function(error) {
+            that.$router.push({ path: "/login" });
+            alert("Error in login!");
+            window.console.log("You can't log in because: " + error);
+          });
+      });
+    },
+    sendNewToken() {
+      let that = this;
+      auth.currentUser.getIdTokenResult(true).then(function(token) {
+        window.console.log("Received token in get token: " + token.token);
+        fetch("/backend/merchant/add", {
+          headers: {
+            "token": token.token,
+            "Content-Type": "application/json"
+          },
+          method: "POST",
+          body: JSON.stringify(that.emptyDTO)
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(myJson => {
+            if (myJson.success === false) alert("Error fetching profile");
+            window.console.log("Success message: " + myJson.success);
+            localStorage.setItem("myToken", token.token);
+            that.send();
+          })
+          .catch(function(error) {
+            that.$router.push({ path: "/login" });
+            alert("Error in login!");
+            window.console.log("You can't log in because: " + error);
+          });
+      });
+    },
     send() {
-      // window.console.log("I am in send method")
-      // window.console.log("My user logged?"+ this.$store.state.isLogged)
+      window.console.log("In send method");
       this.$router.push({ path: "/" });
     },
     manualLogin: function() {
+      let that = this;
       if (this.validOld) {
-        this.$store
-          .dispatch("loginUser", this.user)
+        window.console.log(
+          "Email: " + this.user.email + " pass: " + this.user.password1
+        );
+        auth
+          .signInWithEmailAndPassword(this.user.email, this.user.password1)
           .then(function(res) {
-            // router.push({ path: "/" });
-            window.console.log("res from actions dispatch return " + res);
+            window.console.log("res from firebase on existing user: " + res);
+            that.sendOldToken();
           })
           .catch(function(error) {
-            window.console.log(
-              "Error in manually login after dispatch: " + error
-            );
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+            window.console.log("Error code: " + errorCode);
+            window.console.log("Error msg: " + errorMessage);
           });
       }
     },
@@ -197,38 +284,45 @@ export default {
       this.forLogin = !this.forLogin;
     },
     registerNewUser: function() {
+      let that = this;
       if (this.validNew) {
-        this.$store.dispatch("createNewUser", this.user);
-        // auth.createUserWithEmailAndPassword(this.user.email, this.user.password1)
-        // window.console.log("Email:"+this.user.email+" Password: "+ this.user.password1)
+        window.console.log(
+          "Email: " + this.user.email + " pass: " + this.user.password1
+        );
+        auth
+          .createUserWithEmailAndPassword(this.user.email, this.user.password1)
+          .then(function(res) {
+            window.console.log("res from firebase on New user: " + res);
+            that.sendNewToken();
+          })
+          .catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+            window.console.log("Error code: " + errorCode);
+            window.console.log("Error msg: " + errorMessage);
+          });
       }
-
-      // this.$store.dispatch("createNewUser", this.user);
-
-      // window.console.log("New user registered");
     },
     googleLog: function() {
       let that = this;
-      this.$store
-        .dispatch("googleauth")
-        .then(function(res) {
-          that.send();
-          // this.$router.push({ path: "/" });
-          window.console.log("res from googlelog dispatch return " + res);
+      auth
+        .signInWithPopup(googleProvider)
+        .then(function() {
+          that.sendOldToken();
         })
         .catch(function(error) {
-          window.console.log("Error in google login after dispatch: " + error);
-        });
-    },
-    facebookLog: function() {
-      this.$store
-        .dispatch("fbAuth")
-        .then(function(res) {
-          // router.push({ path: "/merchantHome" });
-          window.console.log("res from fblog dispatch return " + res);
-        })
-        .catch(function(error) {
-          window.console.log("Error in fb login after dispatch: " + error);
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;
+          var credential = error.credential;
+          window.console.log(
+            "Error in google provider: " +
+              errorCode +
+              errorMessage +
+              email +
+              credential
+          );
         });
     }
   },

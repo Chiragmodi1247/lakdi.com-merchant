@@ -3,7 +3,7 @@
     <div class="new_product_mar">
       <h2 style="color: white">Add Existing Product</h2>
 
-<!-- 
+      <!-- 
                 <v-form>
                   <v-text-field
                     label="Email"
@@ -23,7 +23,6 @@
                     type="password"
                   />
                 </v-form> -->
-
 
       <v-row>
         <v-col lg="6" class="my_new_prod_name">
@@ -237,6 +236,21 @@
           />
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col lg="6" class="my_new_prod_name">
+          <h3>Quantity:</h3>
+        </v-col>
+        <v-col>
+          <input
+            class="input-box"
+            v-model="product.productDetailsDto.productQuantity"
+            type="number"
+            placeholder="price"
+          />
+        </v-col>
+      </v-row>
+
     </v-card>
 
     <!-- <table id="price_input">
@@ -271,7 +285,8 @@
 </template>
 
 <script>
-import 'vuetify/dist/vuetify.min.css';
+import "vuetify/dist/vuetify.min.css";
+import store from '../store';
 export default {
   name: "NewProduct",
   data: function() {
@@ -298,8 +313,8 @@ export default {
         productDescription: null,
         productPrice: null,
         productDetailsDto: {
-          merchantId: "mer1",
-          productQuantity: "1"
+          merchantId: "",
+          productQuantity: ""
         }
       }
     };
@@ -309,20 +324,8 @@ export default {
       let image = document.getElementById("output");
       image.src = this.image_url;
     },
-    addInput: function() {
-      let keyinput = document.getElementById("keyinputbox");
-      let valueinput = document.getElementById("valueinputbox");
-      if (keyinput.value !== "" && valueinput.value !== "") {
-        this.product.productAttributes.push({
-          key: keyinput.value,
-          value: valueinput.value
-        });
-        keyinput.value = "";
-        valueinput.value = "";
-      }
-    },
     addProduct: function() {
-      //   window.console.log(this.product);
+      window.console.log("Before fetching addproduct: "+ localStorage.getItem("myToken"))
       if (
         this.product.productName === null ||
         this.product.productId === null ||
@@ -339,16 +342,17 @@ export default {
         return;
       }
 
-      // fetch("http://10.177.68.26:8080/product/addProduct", {
-        fetch("product/addProduct", {
+      fetch("/backend/product/addProduct", {
+      // fetch("product/addProduct", {
         headers: {
+              "token": localStorage.getItem("myToken"),
           "Content-Type": "application/json"
         },
         method: "POST",
         body: JSON.stringify(this.product)
       })
         .then(function(res) {
-          window.console.log(res);
+          window.console.log("After adding new product: "+res.status);
           // if(res.status === 200)
         })
         .catch(function(res) {
@@ -382,25 +386,25 @@ export default {
         });
     },
     loadCategoryProducts: function() {
-      // fetch(
-      //   "http://10.177.68.26:8080/product/getCategoryProducts/" +
-      //     this.selectedCategoryId
-      // )
-      fetch("/addexisting/json")
+      fetch("/backend/product/getCategoryProducts/" + this.selectedCategoryId)
         .then(response => {
           return response.json();
         })
         .then(myJson => {
           window.console.log("Selected Category: " + this.selectedCategoryId);
           this.categoryProducts = myJson.data;
-          // this.category1 = myJson.data[0].categoryName;
-          // window.console.log("Products: "+myJson.data);
         });
     }
   },
   created: function() {
-    // fetch("http://10.177.68.26:8080/product/getCategories")
-      fetch("/addexisting/json")
+    let that = this;
+    window.console.log("My token in new product: "+ store.state.myToken)
+    fetch("/backend/product/getCategories",{
+            headers: {
+              "token": store.state.myToken
+            },
+            method: "GET"
+          })
       .then(response => {
         return response.json();
       })
@@ -408,19 +412,25 @@ export default {
         this.categories = myJson.data;
         this.selectedCategory = myJson.data[0].categoryName;
         this.selectedCategoryId = myJson.data[0].categoryId;
-        // window.console.log("Categories: "+myJson.data);
-      });
+      })
+      .catch(function(err) {
+        window.console.log("Error getting category: "+err)
+        that.$router.push({path: '/login'})
+        alert("Login first!")
+      })
 
-    // fetch("http://10.177.68.26:8080/product/getCategoryProducts/1")
-      fetch("/addexisting/json")
+    fetch("/backend/product/getCategoryProducts/1",{
+            headers: {
+              "token": store.state.myToken
+            },
+            method: "GET"
+          })
       .then(response => {
         return response.json();
       })
       .then(myJson => {
         window.console.log("Selected Category: " + this.selectedCategoryId);
         this.categoryProducts = myJson.data;
-        // this.category1 = myJson.data[0].categoryName;
-        // window.console.log("Products: "+myJson.data);
       });
   }
 };

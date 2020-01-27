@@ -98,8 +98,9 @@ export default {
         alert("Please add number greater than zero!!")
         return;
       }
-        fetch("http://10.177.69.78:8080/productdetails/update", {
+        fetch("/backend/merchant/productdetails/update", {
         headers: {
+          "token": localStorage.getItem("myToken"),
           "Content-Type": "application/json"
         },
         method: "POST",
@@ -113,8 +114,10 @@ export default {
         });
     },
     discontinueProduct: function() {
-      fetch("http://10.177.69.78:8080/productdetails/remove", {
+      window.console.log("ProductId to remove: "+ this.DisconituedProductDetails.productId)
+      fetch("/backend/merchant/productdetails/remove", {
         headers: {
+          "token": localStorage.getItem("myToken"),
           "Content-Type": "application/json"
         },
         method: "DELETE",
@@ -124,7 +127,7 @@ export default {
           window.console.log(res);
         })
         .catch(function(res) {
-          window.console.log(res);
+          window.console.log("Error in discontinue: "+res);
         });
     }
   }

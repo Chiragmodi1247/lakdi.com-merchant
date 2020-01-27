@@ -8,37 +8,11 @@
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
           </v-avatar>
         </v-col>
+
         <v-col lg="6" class="fields_box">
           <v-row>
             <v-col class="field_name">
-              <h1>Name:</h1>
-            </v-col>
-            <v-col>
-              <input
-                type="text"
-                v-model="mydata.merchantName"
-                class="text_input"
-              />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="field_name">
-              <h1>Contact number:</h1>
-            </v-col>
-            <v-col>
-              <input
-                type="tel"
-                v-model="mydata.contact"
-                id="tel_number"
-                class="text_input"
-                pattern="[0-9]{10}"
-              />
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col class="field_name">
-              <h1>Email:</h1>
+              <h2>Email:</h2>
             </v-col>
             <v-col>
               <input
@@ -49,6 +23,47 @@
               />
             </v-col>
           </v-row>
+          <v-row>
+            <v-col class="field_name">
+              <h2>Name:</h2>
+            </v-col>
+            <v-col>
+              <input type="text" v-model="mydata.name" class="text_input" />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="field_name">
+              <h2>Contact number:</h2>
+            </v-col>
+            <v-col>
+              <input
+                type="tel"
+                v-model="mydata.contactNo"
+                id="tel_number"
+                class="text_input"
+                pattern="[0-9]{10}"
+              />
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col class="field_name">
+              <h2>Total product Sold:</h2>
+            </v-col>
+            <v-col>
+              {{ mydata.totalProductsSold }}
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col class="field_name">
+              <h2>Marchant Rating:</h2>
+            </v-col>
+            <v-col>
+              {{ mydata.merchantRating }}
+            </v-col>
+          </v-row>
+
           <br /><br /><br /><br />
           <v-row style="text-align: end">
             <v-col>
@@ -69,9 +84,11 @@ export default {
   data: function() {
     return {
       mydata: {
-        merchantName: "Chirag Modi",
-        contact: "9320360696",
-        email: "chirag.modi@coviam.com"
+        name: "",
+        contactNo: "",
+        totalProductsSold: "",
+        merchantRating: "",
+        email: ""
       }
     };
   },
@@ -84,6 +101,34 @@ export default {
         return false;
       }
     }
+  },
+  created: function() {
+    let that = this;
+    window.console.log("In profile created ");
+    fetch("/backend/merchant/get", {
+      headers: {
+        "token": localStorage.getItem("myToken")
+      },
+      method: "GET"
+    })
+      .then(response => {
+        //  window.console.log("Success message: "+ response.success)
+        // window.console.log("Return from created profile: " + response);
+        return response.json();
+      })
+      .then(myJson => {
+        if (myJson.success === false)
+        alert("Error fetching profile")
+          window.console.log("Success message: " + myJson.success);
+
+        that.mydata = myJson.data;
+        window.console.log("Return from created profile json" + myJson.data);
+      })
+      .catch(function(err) {
+                that.$router.push({ path: "/login" });
+        alert("Error in login!");
+        window.console.log("Error in merchant: " + err);
+      });
   }
 };
 </script>
@@ -102,7 +147,7 @@ export default {
   border-radius: 10px;
 }
 .text_input {
-  font-size: 24pt;
+  font-size: 20pt;
   border: 1px solid blue;
   border-radius: 5px;
 }

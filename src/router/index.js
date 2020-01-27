@@ -8,12 +8,11 @@ import SoldProducts from '../components/SoldProducts.vue'
 import MerchantProfile from '../components/MerchantProfile.vue'
 
 import { auth } from "../firebaseConfig";
-import store from '../store'
 
 Vue.use(VueRouter)
 
 function requireAuth (to, from, next) {
-  if (!store.state.isLogged) 
+  if (localStorage.getItem("myToken") == null) 
   // if (!dummy) 
   {
     next({
@@ -25,20 +24,20 @@ function requireAuth (to, from, next) {
   }
 }
 
-function notRequireAuth (to, from, next) {
-  if (store.state.isLogged) 
-  // if (dummy) 
-  {
-    next({
-      path: '/',
-      // query: { redirect: to.fullPath }
-    })
-  } else {
-    next({
-      // query: { redirect: to.fullPath }
-    })
-  }
-}
+// function notRequireAuth (to, from, next) {
+//   if (localStorage.getItem("myToken")) 
+//   // if (dummy) 
+//   {
+//     next({
+//       path: '/',
+//       // query: { redirect: to.fullPath }
+//     })
+//   } else {
+//     next({
+//       // query: { redirect: to.fullPath }
+//     })
+//   }
+// }
 
 
 const router = new VueRouter({
@@ -46,11 +45,11 @@ const router = new VueRouter({
   base: __dirname,
   routes: [
     { path: '/home', component: Home, beforeEnter: requireAuth  },
-    { path: '/', component: merchantHome, beforeEnter: requireAuth  },
-    { path: '/profile', component: MerchantProfile, beforeEnter: requireAuth  },
-    { path: '/soldproducts', component: SoldProducts, beforeEnter: requireAuth  },
-    { path: '/addProduct', component: newProduct, beforeEnter: requireAuth  },
-    { path: '/login', component: Login, beforeEnter: notRequireAuth },
+    { path: '/', component: merchantHome , beforeEnter: requireAuth },
+    { path: '/profile', component: MerchantProfile , beforeEnter: requireAuth },
+    { path: '/soldproducts', component: SoldProducts , beforeEnter: requireAuth },
+    { path: '/addProduct', component: newProduct , beforeEnter: requireAuth },
+    { path: '/login', component: Login},
     { path: '/logout',
       beforeEnter (to, from, next) {
         auth.logout()
